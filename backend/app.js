@@ -5,6 +5,8 @@ require("dotenv").config({path : "./config/.env"});
 const app = express();
 app.use(express.json());
 
+const userRoutes = require("./routes/user");
+
 mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster-groupomania.ipjfu.mongodb.net/test?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
@@ -17,5 +19,8 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
 });
+
+app.use("/api/auth", userRoutes);
+// app.use("/api/posts", postsRoutes);
 
 module.exports = app;
