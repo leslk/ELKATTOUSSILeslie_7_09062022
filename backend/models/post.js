@@ -7,4 +7,4 @@ const postSchema = mongoose.Schema({
     usersLiked: {type: [String], required: false}
 });
 
-module.exports(mongoose.model("Post", postSchema));
+module.exports = (mongoose.model("Post", postSchema));
