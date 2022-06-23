@@ -1,0 +1,9 @@
+@import "../../scss/custom.scss";
+
+.active-btn {
+    @include button-active-mode;
+}
+
+.auth-btn {
+   @include button-log-mode;
+}

@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;400&display=swap');
+
+$primary-color: #FD2D01;
+$secondary-color: #FFD7D7;
+$tertiary-color: #4E5166;
+$white: #ffffff;
+$grey: #eeeeee;
+$black: #000000;
+
+
+* {
+    font-family: 'Lato', sans-serif;
+  }
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+    color: $black;
+}
+
+@mixin button-auth-form {
+    margin: 20px;
+    padding: 10px 20px 10px 20px;
+    border: none;
+    transition: 0.3s ease-in-out;
+    background-color: $tertiary-color;
+    color: $white;
+    font-weight: bolder;
+    &:hover {
+        box-shadow: 1px 4px 10px 2px $grey;
+    }
+    &:disabled {
+        background-color: lighten($tertiary-color, 30%);
+        color: black;
+        box-shadow: none;
+    }
+}
+
+@mixin button-active-mode {
+    text-decoration: none;
+    margin: 5px;
+    padding: 10px 20px 10px 20px;
+    border: none;
+    transition: 0.3s ease-in-out;
+    background-color: $primary-color;
+    color: $white;
+    font-weight: bolder;
+    &:hover {
+        color: $white;
+    }
+}
+
+@mixin button-log-mode {
+    text-decoration: none;
+    margin: 5px;
+    padding: 10px 20px 10px 20px;
+    border: none;
+    transition: 0.3s ease-in-out;
+    color: $black;
+    font-weight: bolder;
+    &:hover {
+        background-color: $secondary-color;
+        color: $black;
+    }
+}
+
+@mixin input-auth-form {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    &:focus {
+        box-shadow: none;
+        border: $primary-color solid 2px;
+        transition: 0.3s ease-in-out;
+    }
+}
+
+@import 'bootstrap/dist/css/bootstrap.min.css';

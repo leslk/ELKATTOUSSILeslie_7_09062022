@@ -39,7 +39,7 @@ exports.updatePost = (req, res, next) => {
         }
     }
     Post.updateOne({ _id: req.params.id}, {
-        updatePost,
+        updatedPost,
         _id : req.params.id,
     })
     .then(() => res.status(200).json({message: 'Post modifié !'}))
