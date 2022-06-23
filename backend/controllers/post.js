@@ -3,7 +3,7 @@ const Post = require("../models/post");
 exports.createPost = (req, res, next) => {
     const post = new Post ({
         postTextContent : req.body.postTextContent,
-        imageUrl : req.body.imageUrl
+        imageUrl : `${process.env.Host}/images/${req.file.filename}`
     });
     post.save()
     .then(() => res.status(201).json({message: "Post Créé !"}))
@@ -20,7 +20,7 @@ exports.updatePost = (req, res, next) => {
     console.log(req.body);
     Post.updateOne({ _id: req.body.id}, {
         postTextContent : req.body.postTextContent,
-        imageUrl : req.body.imageUrl,
+        imageUrl : `${process.env.Host}/images/${req.file.filename}`,
     })
     .then(() => res.status(200).json({message: 'Post modifié !'}))
     .catch((error) => res.status(400).json({error}));

@@ -1,12 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require("path");
 require("dotenv").config({path : "./config/.env"});
 
 const app = express();
 app.use(express.json());
 
 const userRoutes = require("./routes/user");
-const postRoutes = require("./routes/post")
+const postRoutes = require("./routes/post");
+const { dir } = require("console");
 
 mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster-groupomania.ipjfu.mongodb.net/test?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
@@ -21,6 +23,7 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/auth", userRoutes);
 app.use("/api/posts", postRoutes);
 
