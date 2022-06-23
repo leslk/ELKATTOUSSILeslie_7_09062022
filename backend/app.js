@@ -8,7 +8,6 @@ app.use(express.json());
 
 const userRoutes = require("./routes/user");
 const postRoutes = require("./routes/post");
-const { dir } = require("console");
 
 mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster-groupomania.ipjfu.mongodb.net/test?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
