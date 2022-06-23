@@ -12,23 +12,64 @@ exports.signup = (req, res, next) => {
 
     pwErrorCount = pwValidator.validate(req.body.password, {details: true});
 
+    //Check email validity
     if(!emailRegex.test(req.body.email)) {
-        return res.status(400).json({error: "email invalide"});
-    } else if (pwErrorCount.length === 0) {
-        bcrypt.hash(req.body.password, 10)
+        return res.status(400).json({
+            errorType : "email",
+            message : "email incorrect"
+        });
+    } 
+
+    //Check password validity
+    if (pwErrorCount.length > 0) {
+        return res.status(400).json({
+            errorType : "password",
+            message : "Le mot de passe doit contenir 8 caractères minimum dont 1 majuscule, 1 minscule, 3 chiffres et 1 caractère spécial"
+        })
+    }
+
+    //Create new user
+    bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const user = new User ({
+                pseudo : req.body.pseudo,
                 email : cryptedEmail,
                 password : hash
             });
             user.save()
             .then(() => res.status(201).json({message: "Utilisateur créé !"}))
-            .catch(error => res.status(400).json({error: error}));
+            .catch(function(err) {
+                console.log(err);
+                if ("email" in err.errors) {
+                    return res.status(400).json({
+                        errorType : "email",
+                        message : "email déjà utilisé"
+                    });
+                }
+                
+                // pseudo errors
+                if ("pseudo" in err.errors) {
+
+                    // pseudo isn't unique
+                    if (err.errors.pseudo.kind === "unique") {
+                        return res.status(400).json({
+                            errorType : "pseudo",
+                            message : "Ce pseudo est déjà utilisé"
+                        });
+                    }
+
+                    //pseudo is required
+                    if (err.errors.pseudo.kind === "required") {
+                        return res.status(400).json({
+                            errorType : "pseudo",
+                            message : "Veuillez renseigner un pseudo"
+                        })
+                    }
+                }
+                return res.status(500).json(err);
+            });
         })
-        .catch(error => res.status(500).json({error}));
-    } else {
-        return res.status(400).json({error : pwErrorCount});
-    }  
+        .catch(error => res.status(500).json({error}));  
 }
 
 exports.login = (req, res, next) => {
@@ -39,13 +80,22 @@ exports.login = (req, res, next) => {
     User.findOne({email: cryptedEmail})
     .then(user => {
 
+        // Check if e-mail user exist in database
         if(!user) {
-            res.status(400).json({error: "Utilisateur introuvable"});
+            return res.status(400).json({
+                errorType: "email",
+                message : "Utilisateur introuvable"
+            });
         }
         bcrypt.compare(req.body.password, user.password)
         .then(valid => {
+
+            // Check if password match user database password
             if(!valid) {
-                return res.status(400).json({error: "Mot de passe incorrect"});  
+                return res.status(400).json({
+                    errorType : "password",
+                    message : "mot de passe incorrect"
+                });  
             }
             return res.status(200).json({
                 userId : user._id,
