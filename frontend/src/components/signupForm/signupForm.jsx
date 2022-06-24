@@ -55,10 +55,7 @@ function Signup() {
     }
 
     function handleForm(e) {
-        e.preventDefault()
-        if (email === "" || password === "" || pseudo === "") {
-            setPasswordError("Veuillez remplir tous les champs");
-        } else {
+        e.preventDefault();
             fetch("http://localhost:3000/api/auth/signup", {
                 method: "POST",
                 headers : {
@@ -73,9 +70,7 @@ function Signup() {
             })
             .then(async function(res) {
                 const data = await res.json();
-                console.log('coucou')
                 if (res.status === 201) {
-                    console.log('do login');
                     // login automatically
                     fetch("http://localhost:3000/api/auth/login", {
                         method: "POST",
@@ -112,7 +107,6 @@ function Signup() {
                 }  
             })
             .catch((err) => console.log(err));
-        }
     }
 
     function handlePassword(e) {
@@ -127,7 +121,7 @@ function Signup() {
     }
 
     return (
-        <div className="container">
+        <main className="container py-5">
             <LogMode mode="signup"/>
             <h1 className="signup-title text-center">Bienvenue sur le réseau social <br/> de Groupomania</h1>
             <Form className="w-75 m-auto">
@@ -157,7 +151,7 @@ function Signup() {
                 text="Inscription" 
                 disabled={!emailRegex.test(email) || !passwordValidity.passwordLength || pseudo.length < 3}/>
             </div>   
-        </div>
+        </main>
     )
 }
 

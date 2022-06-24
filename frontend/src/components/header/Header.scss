@@ -1,0 +1,22 @@
+@import "../../scss/custom.scss";
+
+header {
+    min-height: 50px;
+    nav {
+        display: flex;
+        justify-content: space-around;
+    }
+    .navbar-brand {
+        margin: auto;
+    }
+    img {
+        width: 50%;
+    }
+    .navbar-collapse {
+        flex-grow: 0;
+    }
+    .logout-button {
+        @include button-log-mode;
+    }
+}
+

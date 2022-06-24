@@ -5,13 +5,13 @@ import { Link } from "react-router-dom";
 function LogMode(props) {
 
     return (
-        <nav className="auth-form container mt-5">
+        <nav className="auth-form container">
                 <div className="d-flex justify-content-center mb-5">
                     <Link 
                     className={props.mode == 'signup' ? "active-btn rounded-pill" : "auth-btn rounded-pill"} 
                     to="/signup"
                     >
-                        S'inscire
+                        S'inscrire
                     </Link> 
                   
                     <Link 

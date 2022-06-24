@@ -5,9 +5,11 @@ import Button from "../button/Button";
 import {AiOutlineEyeInvisible} from "react-icons/ai";
 import {AiOutlineEye} from "react-icons/ai";
 import LogMode from "../logMode/LogMode";
+import { useNavigate} from "react-router-dom";
 
-function LoginForm() {
+function LoginForm(props) {
 
+    let navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState("");
@@ -17,40 +19,46 @@ function LoginForm() {
 
     function handleForm(e) {
         e.preventDefault()
-        if (email === "" || password === "") {
-            setPasswordError("Veuillez remplir tous les champs");
-        } else {
-            fetch("http://localhost:3000/api/auth/login", {
-                method: "POST",
-                headers : {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email : email,
-                    password : password
-                })
+        fetch("http://localhost:3000/api/auth/login", {
+            method: "POST",
+            headers : {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email : email,
+                password : password
             })
-            .then(res => res.json())
-            .then (function(data) {
-                console.log(data)
-                if (data.type === "email") {
-                    setEmailError(data.error);
-                    setPasswordError("")
+        })
+        .then(async function(res) {
+            const data = await res.json();
+            if (res.status === 200) {
+                localStorage.setItem("token", JSON.stringify(data.token));
+                navigate("/post", {replace: true});
+                props.onConnect();
+                // props.onConnect(true)
+            } else if (res.status === 400) {
+                // Display error
+                if (data.errortype === "email") {
+                    setEmailError(data.message);
                 } else {
-                    setPasswordError(data.error);
-                    setEmailError("");
-                }
-               
-            })
-            .catch((err) => console.log(err));
-        }
-        
+                    setPasswordError(data.message);
+                } 
+            } else if (res.status === 404) {
+                // 404 : redirect 404 page
+            } else if (res.status === 500) {
+                // 500 : redirect page 500
+            } else {
+             // else : throw error or console log
+            }  
+        })
+        .catch((err) => console.log(err));
     }
+
 
     return (
         
-        <div className="container">
+        <main className="container py-5">
             <LogMode mode="login"/>
             <h1 className="login-title text-center">Connectez-vous</h1>
             <Form className="w-75 m-auto">
@@ -85,7 +93,7 @@ function LoginForm() {
                     />
                 </div>
             </Form>
-        </div> 
+        </main> 
     )
 }
 

@@ -10,10 +10,14 @@ $black: #000000;
 
 * {
     font-family: 'Lato', sans-serif;
-  }
+}
 
 a {
     text-decoration: none;
+}
+
+#root {
+    height: 100vh;
 }
 
 a:hover {
@@ -76,6 +80,11 @@ a:hover {
         border: $primary-color solid 2px;
         transition: 0.3s ease-in-out;
     }
+}
+
+@mixin social-network {
+    font-size: 50px;
+    margin: 4px;
 }
 
 @import 'bootstrap/dist/css/bootstrap.min.css';
