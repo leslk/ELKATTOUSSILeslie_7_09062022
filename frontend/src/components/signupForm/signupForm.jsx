@@ -8,7 +8,7 @@ import {AiOutlineEye} from "react-icons/ai";
 import LogMode from "../logMode/LogMode";
 import { useNavigate} from "react-router-dom";
 
-function Signup() {
+function Signup(props) {
 
     let navigate = useNavigate();
     const [pseudo, setPseudo] = useState("");
@@ -85,8 +85,9 @@ function Signup() {
                     })
                     .then(res => res.json())
                     .then((resData) => {
+                        props.onConnect();
                         localStorage.setItem("token", JSON.stringify(resData.token));
-                        navigate("/post", {replace: true});
+                        navigate("/posts", {replace: true});
                     })
                     .catch(err => console.log(err));
                 } else if (res.status === 400) {

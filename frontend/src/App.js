@@ -6,7 +6,7 @@ import Footer from "./components/footer/Footer";
 import { useState,  Redirect } from "react";
 import "./scss/custom.scss";
 import React from "react";
-import {BrowserRouter, Routes, Switch, Route} from "react-router-dom"
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom"
 
 
 function App() {
@@ -21,14 +21,14 @@ function App() {
   }
 
   const [isConnected, setIsConnected] = useState(JSON.parse(localStorage.getItem("token")) ? true : false); // chercher si token lors du refresh
-  // callback onConnect(isUserConnected)
-  // -> setConnected(true)
+
   return (
     <BrowserRouter>
-      <Header isConnected={isConnected}/>
+      <Header isConnected={isConnected} onConnect={handleIsConnected}/>
       <Routes>
-        <Route exact path="/signup" element={<SignupForm onConnect={handleIsConnected}/>} />
-        <Route path="/login" element={<LoginForm onConnect={handleIsConnected}/>}/>
+        <Route exact path="/signup" element={isConnected ? <Navigate to="/posts" replace={true} /> : <SignupForm onConnect={handleIsConnected}/>} />
+        <Route path="/login" element={isConnected ? <Navigate to="/posts" replace={true} /> : <LoginForm onConnect={handleIsConnected}/>}/>
+        <Route path="/posts" element={isConnected ? <p>Bonjour</p> : <Navigate to="/login" replace={true} />}/>
       </Routes>
       <Footer/>
     </BrowserRouter>

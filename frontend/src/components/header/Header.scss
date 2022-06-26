@@ -1,7 +1,6 @@
 @import "../../scss/custom.scss";
 
 header {
-    min-height: 50px;
     nav {
         display: flex;
         justify-content: space-around;
@@ -10,13 +9,20 @@ header {
         margin: auto;
     }
     img {
-        width: 50%;
+        height: 50px;
+        width: auto;
     }
     .navbar-collapse {
         flex-grow: 0;
     }
     .logout-button {
+        line-height: 30px;
+        text-align: center;
         @include button-log-mode;
+    }
+    .logout-icon {
+        font-size: 20px;
+        font-weight: bolder;
     }
 }
 
