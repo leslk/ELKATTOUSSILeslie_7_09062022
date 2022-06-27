@@ -7,8 +7,9 @@ require("dotenv").config({path : "./config/.env"});
 
 exports.createPost = (req, res, next) => {
     const post = new Post ({
-        postTextContent : req.body.postTextContent,
-        imageUrl : `${process.env.HOST}/images/${req.file.filename}`
+        ...req.body,
+        imageUrl : `${process.env.HOST}/images/${req.file.filename}`,
+        created : Date.now(),
     });
     post.save()
     .then(() => res.status(201).json({message: "Post Créé !"}))

@@ -85,8 +85,8 @@ function Signup(props) {
                     })
                     .then(res => res.json())
                     .then((resData) => {
-                        props.onConnect();
                         localStorage.setItem("token", JSON.stringify(resData.token));
+                        props.onConnect(resData);
                         navigate("/posts", {replace: true});
                     })
                     .catch(err => console.log(err));

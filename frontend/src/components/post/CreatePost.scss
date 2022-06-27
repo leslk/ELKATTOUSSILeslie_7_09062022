@@ -1,0 +1,16 @@
+@import "../../scss/custom.scss";
+
+.image-btn {
+    @include button-log-mode;
+}
+
+.send-btn {
+    @include button-active-mode;
+}
+
+.post-input {
+    height: 6rem;
+    &:focus {
+        border: 2px solid $tertiary-color;
+    }
+}

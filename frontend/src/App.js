@@ -3,23 +3,28 @@ import LoginForm from "./components/loginForm/LoginForm";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 
-import { useState,  Redirect } from "react";
-import "./scss/custom.scss";
+import { useState} from "react";
 import React from "react";
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom"
+import CreatePost from "./components/post/CreatePost";
 
 
 function App() {
 
-  function handleIsConnected() {
+  function handleIsConnected(userData) {
     const token = JSON.parse(localStorage.getItem("token"));
     if (token) {
+      if (userData) {
+        localStorage.setItem("user", JSON.stringify(userData));
+        setUser(userData);
+      }
       setIsConnected(true);
     } else {
       setIsConnected(false);
     }
   }
 
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [isConnected, setIsConnected] = useState(JSON.parse(localStorage.getItem("token")) ? true : false); // chercher si token lors du refresh
 
   return (
@@ -28,7 +33,7 @@ function App() {
       <Routes>
         <Route exact path="/signup" element={isConnected ? <Navigate to="/posts" replace={true} /> : <SignupForm onConnect={handleIsConnected}/>} />
         <Route path="/login" element={isConnected ? <Navigate to="/posts" replace={true} /> : <LoginForm onConnect={handleIsConnected}/>}/>
-        <Route path="/posts" element={isConnected ? <p>Bonjour</p> : <Navigate to="/login" replace={true} />}/>
+        <Route path="/posts" element={isConnected ? < CreatePost user={user}/> : <Navigate to="/login" replace={true} />}/>
       </Routes>
       <Footer/>
     </BrowserRouter>
