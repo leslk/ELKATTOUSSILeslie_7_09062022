@@ -35,7 +35,7 @@ function LoginForm(props) {
             if (res.status === 200) {
                 localStorage.setItem("token", JSON.stringify(data.token));
                 navigate("/posts", {replace: true});
-                props.onConnect();
+                props.onConnect(data);
             } else if (res.status === 400) {
                 // Display error
                 if (data.errortype === "email") {

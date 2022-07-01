@@ -15,13 +15,12 @@ if (fs.existsSync(imageDir)) {
     });
 }
 
-
 // Set files extensions
 const MIME_TYPES = {
     "image/jpg": "jpg",
     "image/jpeg": "jpg",
     "image/png": "png",
-    "image.gif": "gif"
+    "image/gif": "gif"
 }
 
 // Set multer storage configuration

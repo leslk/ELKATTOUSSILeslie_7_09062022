@@ -2,15 +2,25 @@
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const Post = require("../models/post");
+const User = require("../models/user")
 require("dotenv").config({path : "./config/.env"});
 
 
 exports.createPost = (req, res, next) => {
-    const post = new Post ({
-        ...req.body,
-        imageUrl : `${process.env.HOST}/images/${req.file.filename}`,
-        created : Date.now(),
-    });
+    console.log(req.body);
+    let post = {};
+    if(req.file) {
+        post = new Post({
+            ...req.body,
+            imageUrl : `${process.env.HOST}/images/${req.file.filename}`,
+            created : Date.now(),
+        });
+    } else {
+        post = new Post({
+            ...req.body,
+            created : Date.now(),
+        });
+    }
     post.save()
     .then(() => res.status(201).json({message: "Post Créé !"}))
     .catch(error => res.status(400).json({ error }));
@@ -18,7 +28,15 @@ exports.createPost = (req, res, next) => {
 
 exports.getAllPosts = (req, res, next) => {
     Post.find()
-    .then(posts => res.status(200).json(posts))
+    // .then(async (posts) => {
+    //     for (let post of posts) {
+    //         const user = await User.findOne({_id: post.userId})
+    //         post.pseudo = user.pseudo;
+    //         console.log(typeof(post));
+    //     }
+    //     console.log(posts)
+    // })
+    .then((data) => res.status(200).json(data))
     .catch(error => res.status(400).json({error}));
 };
 
@@ -68,14 +86,14 @@ exports.deletePost = (req, res, next) => {
 };
 
 exports.addLikeToPost = (req, res, next) => {
-    Post.findOne({_id: req.params.id})
+    Post.findOne({_id: req.body.id})
     .then(post => {
         switch(req.body.like) {
             case 1 : 
                 if(post.usersLiked.includes(req.body.userId)) {
                     res.status(400).json({error: "Vous avez deja liké ce post"}); 
                 } else {
-                    Post.updateOne({_id: req.params.id},
+                    Post.updateOne({_id: req.body.id},
                         {$push : {usersLiked: req.body.userId},
                         $inc: {likes: +1}})
                     .then(() => {
@@ -86,7 +104,7 @@ exports.addLikeToPost = (req, res, next) => {
                 break;
 
             case 0 : 
-                if(post.usersLiked.includes(req.params.userId)) {
+                if(post.usersLiked.includes(req.body.userId)) {
                     Post.updateOne({_id: req.body.id},
                         {$pull : {usersLiked: req.body.userId},
                         $inc: {likes: -1}})
