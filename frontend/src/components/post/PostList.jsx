@@ -16,6 +16,17 @@ function PostList(props) {
         })
         .then(res => res.json())
         .then((data) => {
+            data.sort(function(a, b) {
+                const dateA = Date.parse(a.created);
+                const dateB = Date.parse(b.created);
+                if (dateA > dateB) {
+                    return -1;
+                }
+                if (dateA < dateB) {
+                    return 1;
+                }
+                return 0;
+            })
             setPostList(data)
             setDataLoaded(true)
         }) 
@@ -34,7 +45,7 @@ function PostList(props) {
                     textContent={e.textContent}
                     imageUrl={e.imageUrl}
                     likes={e.likes}
-                    created={e.created}
+                    created={new Date(e.created).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}
                     id={e._id}
                     />
                 </div> 

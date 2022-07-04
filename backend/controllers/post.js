@@ -18,6 +18,7 @@ exports.createPost = (req, res, next) => {
     } else {
         post = new Post({
             ...req.body,
+            imageUrl : null,
             created : Date.now(),
         });
     }
@@ -29,12 +30,11 @@ exports.createPost = (req, res, next) => {
 exports.getAllPosts = (req, res, next) => {
     Post.find()
     // .then(async (posts) => {
+        
     //     for (let post of posts) {
     //         const user = await User.findOne({_id: post.userId})
     //         post.pseudo = user.pseudo;
-    //         console.log(typeof(post));
     //     }
-    //     console.log(posts)
     // })
     .then((data) => res.status(200).json(data))
     .catch(error => res.status(400).json({error}));
@@ -70,17 +70,22 @@ exports.deletePost = (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
     const userId = decodedToken.userId;
+    console.log(userId);
 
-    Post.findOne({_id: req.params.id})
+    Post.findOne({_id: req.body.id})
     .then(post => {
+        console.log(post)
         if (post.userId != userId) {
+            console.log(userId)
             return res.status(401).json("requête non autorisée !");
         }
-        const fileName = post.imageUrl.split("/images/")[1];
-        fs.unlinkSync(`images/${fileName}`)
-            Post.deleteOne({ _id: req.params.id })
-            .then(() => res.status(200).json({ message: "Sauce supprimée !"}))
-            .catch(error => res.status(400).json({ error: error })); 
+        if (post.imageUrl) {
+            const fileName = post.imageUrl.split("/images/")[1];
+            fs.unlinkSync(`images/${fileName}`)
+        }
+        Post.deleteOne({ _id: req.body.id })
+        .then(() => res.status(200).json({ message: "Post supprimé !"}))
+        .catch(error => res.status(400).json({ error: error })); 
     })
     .catch(error => res.status(500).json({error: error}));
 };
