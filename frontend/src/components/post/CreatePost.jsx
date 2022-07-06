@@ -1,9 +1,9 @@
+import { useContext } from "react";
 import { useState } from "react";
 import { useRef } from "react";
-import {Form, Alert} from "react-bootstrap";
+import {Form} from "react-bootstrap";
 import "./CreatePost.scss";
 import PostList from "./PostList";
-
 
 function CreatePost(props) {
  
@@ -12,14 +12,13 @@ function CreatePost(props) {
     const [errorImage, setErrorImage] = useState(null);
     const [showImage, setShowImage] = useState(false);
     const [textContent, setTextContent] = useState();
+    const [textContentError, setTextContentError] = useState("");
     const [charactercount, setCharacterCount] = useState(0);
-    const [update, setUpdate] = useState(false);
 
     function handleChange(e) {
         console.log(e.target.files.length);
         const fileName = e.target.files[0].name;
         const extension = fileName.split(".")[1];
-        console.log(extension);
         if (['gif', 'png', 'jpeg', 'jpg'].includes(extension)) {
             fileRef.current.files = e.target.files;
             setImage(URL.createObjectURL(e.target.files[0]));
@@ -31,15 +30,20 @@ function CreatePost(props) {
         }
     };
 
-    function handleReset(e) {
+    function handleReset() {
         fileRef.current.value = null;
         setShowImage(false);
     }
 
     function handleCharacter(e) {
-
         setTextContent(e.target.value);
         setCharacterCount(e.target.value.length);
+        if (e.target.value.length < 3) {
+            setTextContentError("un minimun de 3 charactères est requis");
+         }else if (e.target.value.length > 500) {
+            setTextContentError("Vous avez atteint le maximum de caractères acceptés pour la création d'un post");
+        }
+        setTextContentError("");
     }
 
     function handlePost(e) {
@@ -62,10 +66,12 @@ function CreatePost(props) {
 
     <main className="col m-3">
             {/* <h1>Bonjour {props.user.pseudo}</h1> */}
+           
             <Form className="shadow container bg-light rounded-3 col mb-5 col-md-8 col-lg-5">
                 <Form.Group controlId="FormPost">
                     <Form.Label className="h5 my-3 w-100 text-center">Nouvelle publication</Form.Label>
                     <Form.Control onChange={handleCharacter} as="textarea" rows={3} className="post-input rounded-3 mb-2" name="post" placeholder="Ecrivez quelque chose"/>
+                    <p>{textContentError}</p>
                     <p>{charactercount} /500 caractères</p>
                 </Form.Group>
                 <Form.Group controlId="formFile" className="mb-3">

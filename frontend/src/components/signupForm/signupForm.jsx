@@ -7,6 +7,7 @@ import {AiOutlineEyeInvisible} from "react-icons/ai";
 import {AiOutlineEye} from "react-icons/ai";
 import LogMode from "../logMode/LogMode";
 import { useNavigate} from "react-router-dom";
+import { addItem } from "../../services/LocalStorage";
 
 function Signup(props) {
 
@@ -85,7 +86,7 @@ function Signup(props) {
                     })
                     .then(res => res.json())
                     .then((resData) => {
-                        localStorage.setItem("token", JSON.stringify(resData.token));
+                        addItem("token", JSON.stringify(resData.token))
                         props.onConnect(resData);
                         navigate("/posts", {replace: true});
                     })

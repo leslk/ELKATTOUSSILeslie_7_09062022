@@ -1,4 +1,4 @@
-@import "../../scss/custom.scss";
+
 
 header {
     nav {
@@ -18,7 +18,7 @@ header {
     .logout-button {
         line-height: 30px;
         text-align: center;
-        @include button-log-mode;
+        // @include button-log-mode;
     }
     .logout-icon {
         font-size: 20px;

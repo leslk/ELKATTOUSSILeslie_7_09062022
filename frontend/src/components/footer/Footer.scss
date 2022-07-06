@@ -1,24 +1,24 @@
-@import "../../scss/custom.scss";
+// @import "../../scss/custom.scss";
 
-footer {
-    h2 {
-        font-size: 18px;
-        font-weight: bolder;
-        color: $tertiary-color;
-    }
-}
+// footer {
+//     h2 {
+//         font-size: 18px;
+//         font-weight: bolder;
+//         color: $tertiary;
+//     }
+// }
 
-.footer-icons-facebook {
-    color: #3b5998;
-    @include social-network;
-}
+// .footer-icons-facebook {
+//     color: #3b5998;
+//     @include social-network;
+// }
 
-.footer-icons-twitter {
-    color: #00acee;
-    @include social-network;
-}
+// .footer-icons-twitter {
+//     color: #00acee;
+//     @include social-network;
+// }
 
-.footer-icons-linkedin {
-    color: #0e76a8;
-    @include social-network;
-}
+// .footer-icons-linkedin {
+//     color: #0e76a8;
+//     @include social-network;
+// }

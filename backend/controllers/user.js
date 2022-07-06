@@ -94,7 +94,7 @@ exports.login = (req, res, next) => {
             if(!valid) {
                 return res.status(400).json({
                     errorType : "password",
-                    message : "mot de passe incorrect"
+                    message : "Mot de passe incorrect"
                 });  
             }
             return res.status(200).json({

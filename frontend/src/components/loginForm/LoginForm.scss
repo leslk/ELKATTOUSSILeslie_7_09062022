@@ -1,17 +1,17 @@
-@import "../../scss/custom.scss";
-
-.auth-btn {
-    @include button-log-mode;
- }
 
 
+// .auth-btn {
+//     @include button-log-mode;
+//  }
 
-form {
-    max-width: 400px;
-    .form-control {
-        @include input-auth-form;
-     }
-}
+
+
+// form {
+//     max-width: 400px;
+//     .form-control {
+//         @include input-auth-form;
+//      }
+// }
 
 .password-icon {
     font-size: 20px;

@@ -29,13 +29,14 @@ exports.createPost = (req, res, next) => {
 
 exports.getAllPosts = (req, res, next) => {
     Post.find()
-    // .then(async (posts) => {
-        
-    //     for (let post of posts) {
-    //         const user = await User.findOne({_id: post.userId})
-    //         post.pseudo = user.pseudo;
-    //     }
-    // })
+    .then(async (posts) => {
+        const allPosts = [];
+        for (let post of posts) {
+            const user = await User.findOne({_id: post.userId})
+            allPosts.push({...post._doc , pseudo: user.pseudo});
+        }
+        return allPosts;
+    })
     .then((data) => res.status(200).json(data))
     .catch(error => res.status(400).json({error}));
 };

@@ -1,12 +1,12 @@
-@import "../../scss/custom.scss";
 
-.auth-btn {
-    @include button-log-mode;
- }
 
-.form-control {
-   @include input-auth-form;
-}
+// .auth-btn {
+//     @include button-log-mode;
+//  }
+
+// .form-control {
+//    @include input-auth-form;
+// }
 
 form {
     max-width: 400px;

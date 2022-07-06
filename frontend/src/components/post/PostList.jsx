@@ -8,14 +8,17 @@ function PostList(props) {
     const [dataLoaded, setDataLoaded] = useState(false);
 
     useEffect(() => {
+        const token = `Bearer ${JSON.parse(localStorage.getItem("token"))}`;
+        console.log(token);
         fetch("http://localhost:3000/api/posts",{
             method: "GET",
             headers: {
-                "Authorization" : `Bearer ${JSON.parse(localStorage.getItem("token"))}`
+                "Authorization" : token
             }
         })
         .then(res => res.json())
         .then((data) => {
+            console.log(data);
             data.sort(function(a, b) {
                 const dateA = Date.parse(a.created);
                 const dateB = Date.parse(b.created);
@@ -30,7 +33,8 @@ function PostList(props) {
             setPostList(data)
             setDataLoaded(true)
         }) 
-    },[])
+    },[]);
+
     return (
         dataLoaded
         ? 
