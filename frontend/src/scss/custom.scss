@@ -1,10 +1,23 @@
-@import "./settings.scss";
-@import "../../node_modules/bootstrap/scss/bootstrap";
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;400&display=swap');
 
-// @import "../components/button/Button.scss";
-// @import "../components/footer/Footer.scss";
+$primary: #FD2D01;
+$secondary: #FFD7D7;
+$tertiary: #4E5166;
+$grey: #eeeeee;
+$white: #ffffff;
+$grey: #eeeeee;
+$black: #000000;
+$danger: #fd0101;
 
-
+$theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "tertiary": $tertiary,
+    "white": $white,
+    "grey": $grey,
+    "black": $black,
+    "danger" : $danger
+);
 
 * {
     font-family: 'Lato', sans-serif;
@@ -20,85 +33,80 @@ a:hover {
     color: $black;
 }
 
-// $primary-color: #FD2D01;
-// $secondary-color: #FFD7D7;
-// $tertiary-color: #4E5166;
-// $white: #ffffff;
-// $grey: #eeeeee;
-// $black: #000000;
+@import "../../node_modules/bootstrap/scss/bootstrap";
 
+* {
+    font-family: 'Lato', sans-serif;
+}
 
-// * {
-//     font-family: 'Lato', sans-serif;
-// }
+a {
+    color: $black;
+    text-decoration: none;
+}
 
-// a {
-//     text-decoration: none;
-// }
+a:hover {
+    text-decoration: none;
+    color: $black;
+}
 
-// a:hover {
-//     text-decoration: none;
-//     color: $black;
-// }
+@mixin button-auth-form {
+    margin: 20px;
+    padding: 10px 20px 10px 20px;
+    border: none;
+    transition: 0.3s ease-in-out;
+    background-color: $tertiary-color;
+    color: $white;
+    font-weight: bolder;
+    &:hover {
+        box-shadow: 1px 4px 10px 2px $grey;
+    }
+    &:disabled {
+        background-color: lighten($tertiary-color, 30%);
+        color: black;
+        box-shadow: none;
+    }
+}
 
-// @mixin button-auth-form {
-//     margin: 20px;
-//     padding: 10px 20px 10px 20px;
-//     border: none;
-//     transition: 0.3s ease-in-out;
-//     background-color: $tertiary-color;
-//     color: $white;
-//     font-weight: bolder;
-//     &:hover {
-//         box-shadow: 1px 4px 10px 2px $grey;
-//     }
-//     &:disabled {
-//         background-color: lighten($tertiary-color, 30%);
-//         color: black;
-//         box-shadow: none;
-//     }
-// }
+@mixin button-active-mode {
+    text-decoration: none;
+    margin: 5px;
+    padding: 10px 20px 10px 20px;
+    border: none;
+    transition: 0.3s ease-in-out;
+    background-color: $primary-color;
+    color: $white;
+    font-weight: bolder;
+    &:hover {
+        color: $white;
+    }
+}
 
-// @mixin button-active-mode {
-//     text-decoration: none;
-//     margin: 5px;
-//     padding: 10px 20px 10px 20px;
-//     border: none;
-//     transition: 0.3s ease-in-out;
-//     background-color: $primary-color;
-//     color: $white;
-//     font-weight: bolder;
-//     &:hover {
-//         color: $white;
-//     }
-// }
+@mixin button-log-mode {
+    text-decoration: none;
+    margin: 5px;
+    padding: 10px 20px 10px 20px;
+    border: none;
+    transition: 0.3s ease-in-out;
+    color: $black;
+    font-weight: bolder;
+    &:hover {
+        background-color: $secondary-color;
+        color: $black;
+    }
+}
 
-// @mixin button-log-mode {
-//     text-decoration: none;
-//     margin: 5px;
-//     padding: 10px 20px 10px 20px;
-//     border: none;
-//     transition: 0.3s ease-in-out;
-//     color: $black;
-//     font-weight: bolder;
-//     &:hover {
-//         background-color: $secondary-color;
-//         color: $black;
-//     }
-// }
+@mixin input-auth-form {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    &:focus {
+        box-shadow: none;
+        border: $primary-color solid 2px;
+        transition: 0.3s ease-in-out;
+    }
+}
 
-// @mixin input-auth-form {
-//     text-overflow: ellipsis;
-//     white-space: nowrap;
-//     overflow: hidden;
-//     &:focus {
-//         box-shadow: none;
-//         border: $primary-color solid 2px;
-//         transition: 0.3s ease-in-out;
-//     }
-// }
-
-// @mixin social-network {
-//     font-size: 50px;
-//     margin: 4px;
-// }
+@mixin social-network {
+    font-size: 50px;
+    margin: 4px;
+}

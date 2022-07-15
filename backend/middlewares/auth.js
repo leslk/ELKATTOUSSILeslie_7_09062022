@@ -1,14 +1,15 @@
 // Requires
 const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
 // Verify authentication
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
     try{
         // Decode token
-        console.log(req);
         const token = req.headers.authorization.split(" ")[1];
         const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
         const userId = decodedToken.userId;
+
         // Check if request body userId exist 
         // if it doesn't match with userId == throw error
         if (req.body.userId && req.body.userId !== userId) {

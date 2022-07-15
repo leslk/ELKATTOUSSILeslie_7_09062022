@@ -4,7 +4,7 @@ function LikeButton(props) {
 
     return (
         <div>
-            {props.like === 0 ? <BsFillSuitHeartFill size="24" color="red" onClick={props.addLike}/> : <BsSuitHeart size="24" onClick={props.addLike}/>}
+            {props.like === 1 ? <BsFillSuitHeartFill size="24" color="red" onClick={() => props.handleLike(0)}/> : <BsSuitHeart size="24" onClick={() => props.handleLike(1)}/>}
         </div>
         
 

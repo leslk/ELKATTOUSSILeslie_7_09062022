@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useContext} from "react";
 import {Form} from "react-bootstrap";
 import "./signupForm.scss";
 import Button from "../button/Button";
@@ -7,14 +7,20 @@ import {AiOutlineEyeInvisible} from "react-icons/ai";
 import {AiOutlineEye} from "react-icons/ai";
 import LogMode from "../logMode/LogMode";
 import { useNavigate} from "react-router-dom";
-import { addItem } from "../../services/LocalStorage";
+import { addItem } from "../../services/localStorageTools";
+import { hasAuthenticated } from "../../services/authTools";
+import AuthContext from "../../context/AuthContext";
 
-function Signup(props) {
+function Signup() {
 
+    const {setUser} = useContext(AuthContext);
     let navigate = useNavigate();
-    const [pseudo, setPseudo] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [credentials, setCredentials] = useState({
+        pseudo: "",
+        email: "",
+        password: ""
+    });
+
     const [pseudoError, setPseudoError] = useState("");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
@@ -35,6 +41,11 @@ function Signup(props) {
     const numbersRegex = /(.*[0-9]{3,})/;
     const symbolRegex = /(.*\W)/;
 
+    function handleChange({currentTarget}) {
+        const {name, value} = currentTarget;
+        setCredentials({...credentials, [name] : value});
+    }
+
     function handlePseudo(e) {
         const pseudoChecker = e.target.value;
         if (pseudoChecker.length < 3) {
@@ -42,7 +53,6 @@ function Signup(props) {
         } else {
             setPseudoError("");
         }
-        setPseudo(e.target.value);
     }
 
     function handleEmail(e) {
@@ -52,7 +62,6 @@ function Signup(props) {
         } else {
             setEmailError("");
         }
-        setEmail(e.target.value);
     }
 
     function handleForm(e) {
@@ -64,9 +73,7 @@ function Signup(props) {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    pseudo: pseudo,
-                    email : email,
-                    password : password
+                    ...credentials
                 })
             })
             .then(async function(res) {
@@ -80,14 +87,14 @@ function Signup(props) {
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            email : email,
-                            password : password
+                            email : credentials.email,
+                            password : credentials.password
                         })
                     })
                     .then(res => res.json())
-                    .then((resData) => {
-                        addItem("token", JSON.stringify(resData.token))
-                        props.onConnect(resData);
+                    .then((data) => {
+                        addItem("user", JSON.stringify(data));
+                        setUser(hasAuthenticated());
                         navigate("/posts", {replace: true});
                     })
                     .catch(err => console.log(err));
@@ -118,8 +125,7 @@ function Signup(props) {
             numbers: numbersRegex.test(e.target.value),
             symbol : symbolRegex.test(e.target.value),
             passwordLength : e.target.value.length >= 8
-        }); 
-        setPassword(e.target.value);  
+        });  
     }
 
     return (
@@ -128,16 +134,34 @@ function Signup(props) {
             <h1 className="signup-title text-center">Bienvenue sur le réseau social <br/> de Groupomania</h1>
             <Form className="w-75 m-auto">
                 <Form.Label htmlFor="pseudo">Pseudo</Form.Label>
-                <Form.Control className="rounded-pill" onFocus={() => setPasswordOnFocus(false)} onChange={handlePseudo} value={pseudo} id="pseudo" name="pseudo" type="text" required/>
+                <Form.Control 
+                className="rounded-pill" 
+                onChange={(e) => {handleChange(e); handlePseudo(e)}} 
+                onFocus={() => setPasswordOnFocus(false)}
+                value={credentials.pseudo} 
+                id="pseudo" 
+                name="pseudo" 
+                type="text" 
+                required
+                />
                 <p className="text-danger">{pseudoError}</p>
                 <Form.Label htmlFor="email">E-mail</Form.Label>
-                <Form.Control className="rounded-pill" onFocus={() => setPasswordOnFocus(false)} onChange={handleEmail} value={email} id="email" name="email" type="email" required/>
+                <Form.Control 
+                className="rounded-pill" 
+                onFocus={() => setPasswordOnFocus(false)}
+                onChange={(e) => {handleChange(e); handleEmail(e)}} 
+                value={credentials.email} 
+                id="email" 
+                name="email" 
+                type="email" 
+                required
+                />
                 <p className="text-danger">{emailError}</p>
                 <Form.Label  htmlFor="password">Mot de passe</Form.Label>
                 <div className="d-flex position-relative align-items-center">
                     <Form.Control className="rounded-pill"
                     onFocus={() => setPasswordOnFocus(true)} 
-                    onChange={handlePassword} value={password} 
+                    onChange={(e) => {handlePassword(e); handleChange(e)}} value={credentials.password} 
                     id="password" 
                     name="password" 
                     type={showPassword ? "text" : "password"} 
@@ -149,9 +173,9 @@ function Signup(props) {
                 {passwordOnFocus ? <PasswordValidator {...passwordValidity}/> : null}
             </Form>
             <div className="text-center">
-                <Button onClick={handleForm} 
+                <Button onClick={handleForm}  
                 text="Inscription" 
-                disabled={!emailRegex.test(email) || !passwordValidity.passwordLength || pseudo.length < 3}/>
+                disabled={!emailRegex.test(credentials.email) || !passwordValidity.passwordLength || credentials.pseudo.length < 3}/>
             </div>   
         </main>
     )

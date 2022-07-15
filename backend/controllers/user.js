@@ -39,7 +39,6 @@ exports.signup = (req, res, next) => {
             user.save()
             .then(() => res.status(201).json({message: "Utilisateur créé !"}))
             .catch(function(err) {
-                console.log(err);
                 if ("email" in err.errors) {
                     return res.status(400).json({
                         errorType : "email",
@@ -104,7 +103,8 @@ exports.login = (req, res, next) => {
                         {userId : user._id},
                         process.env.TOKEN_SECRET,
                         {expiresIn: "12h"}
-                    )
+                    ),
+                isAdmin : user.isAdmin
             });
         }) 
         .catch(error => res.status(500).json({error}));

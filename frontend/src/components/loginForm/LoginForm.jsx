@@ -6,28 +6,27 @@ import {AiOutlineEyeInvisible} from "react-icons/ai";
 import {AiOutlineEye} from "react-icons/ai";
 import LogMode from "../logMode/LogMode";
 import { useNavigate} from "react-router-dom";
-import { addItem } from "../../services/LocalStorage";
+import { addItem } from "../../services/localStorageTools";
 import AuthContext from "../../context/AuthContext";
-import { hasAuthenticated } from "../../services/Auth";
+import { hasAuthenticated } from "../../services/authTools";
 
 function LoginForm() {
 
-    const {isAuthenticated, setIsAuthenticated} = useContext(AuthContext);
+    const {setUser} = useContext(AuthContext);
     let navigate = useNavigate();
-    const [user, setUser] = useState({
+    const [credentials, setCredentials] = useState({
         email: "",
         password: ""
     });
+
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const emailRegex = /^([a-zA-Z0-9\.-_]+)@([a-zA-Z0-9-_]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/;
 
     function handleChange({currentTarget}) {
-        console.log(currentTarget);
         const {name, value} = currentTarget;
-        setUser({...user, [name] : value});
-        //console.log(user);
+        setCredentials({...credentials, [name] : value});
     }
 
     function handleForm(e) {
@@ -39,16 +38,14 @@ function LoginForm() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                ...user
+                ...credentials
             })
         })
         .then(async function(res) {
             const data = await res.json();
             if (res.status === 200) {
-                localStorage.setItem("token", JSON.stringify(data.token))
-                //addItem("token", JSON.stringify(data.token));
-                console.log(localStorage.getItem("token"));
-                setIsAuthenticated(true);
+                addItem("user", JSON.stringify(data));
+                setUser(hasAuthenticated());
                 navigate("/posts", {replace: true});
                 
             } else if (res.status === 400) {
@@ -80,24 +77,24 @@ function LoginForm() {
             <Form className="w-75 m-auto">
                 <Form.Label htmlFor="email">E-mail</Form.Label>
                 <Form.Control className="rounded-pill" 
-                    onChange={handleChange} 
-                    value={user.email} 
-                    id="email" 
-                    name="email" 
-                    type="email" 
-                    required
+                onChange={handleChange} 
+                value={credentials.email} 
+                id="email" 
+                name="email" 
+                type="email" 
+                required
                 />
                 <p className="text-danger">{emailError}</p>
                 <Form.Label  htmlFor="password">Mot de passe</Form.Label>
                 <div className="d-flex position-relative align-items-center">
                     <Form.Control 
-                        className="rounded-pill" 
-                        onChange={handleChange} 
-                        value={user.password} 
-                        id="password" 
-                        name="password" 
-                        type={showPassword ? "text" : "password"} 
-                        required
+                    className="rounded-pill" 
+                    onChange={handleChange} 
+                    value={credentials.password} 
+                    id="password" 
+                    name="password" 
+                    type={showPassword ? "text" : "password"} 
+                    required
                     />
                     {showPassword ? <AiOutlineEye className="password-icon" onClick={() => setShowPassword(false)}/>: <AiOutlineEyeInvisible className="password-icon" onClick={() => setShowPassword(true)}/> }
                 </div>
@@ -105,7 +102,7 @@ function LoginForm() {
                 <div className="text-center">
                     <Button onClick={handleForm} 
                     text="Connexion" 
-                    disabled={!emailRegex.test(user.email) || user.password.length < 8}
+                    disabled={!emailRegex.test(credentials.email) || credentials.password.length < 8}
                     />
                 </div>
             </Form>

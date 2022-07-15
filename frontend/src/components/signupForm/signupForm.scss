@@ -1,4 +1,5 @@
-
+// @import "../../scss/custom.scss";
+// @import "../../scss/settings.scss";
 
 // .auth-btn {
 //     @include button-log-mode;
@@ -8,14 +9,14 @@
 //    @include input-auth-form;
 // }
 
-form {
-    max-width: 400px;
-}
+// form {
+//     max-width: 400px;
+// }
 
-.password-icon {
-    font-size: 20px;
-    margin-left: 15px;
-    background-color: white;
-    position: absolute;
-    right: 10px;
-}
+// .password-icon {
+//     font-size: 20px;
+//     margin-left: 15px;
+//     background-color:$white;
+//     position: absolute;
+//     right: 10px;
+// }

@@ -1,4 +1,4 @@
-// CSS
+// SCSS
 import "./scss/custom.scss";
 // Context
 import AuthContext from "./context/AuthContext";
@@ -8,36 +8,35 @@ import Footer from "./components/footer/Footer";
 import LoginForm from "./components/loginForm/LoginForm";
 import SignupForm from "./components/signupForm/signupForm";
 import AuthenticatedRoute from "./components/AutenticatedRoute";
-import CreatePost from "./components/post/CreatePost";
+import PostList from "./components/post/PostList";
 // React
 import { useState} from "react";
 import React from "react";
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom"
 // Services
-import { hasAuthenticated } from "./services/Auth";
+import { hasAuthenticated } from "./services/authTools";
 
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(hasAuthenticated());
+  const [user, setUser] = useState(hasAuthenticated());
 
   return (
     <BrowserRouter>
-      <AuthContext.Provider value={{isAuthenticated, setIsAuthenticated}}>
-        <Header isAuthenticated={isAuthenticated}/>
+      <AuthContext.Provider value={{user, setUser}}>
+        <Header />
         <Routes>
           <Route exact path="/signup" element={<SignupForm/>}/>
           <Route exact path="/login" element={<LoginForm/>}/>
           <Route element={<AuthenticatedRoute/>}>
             <Route exact path="/" element={<Navigate to="/posts" replace={true}/>} />
-            <Route path="/posts" element={<CreatePost/>} />
+            <Route path="/posts" element={<PostList/>} />
           </Route>
           {/*Check another method to block unexisting routes*/}
           <Route path='*' element={<p>Not Found</p>}/>
         </Routes>
         <Footer/>
       </AuthContext.Provider>
-    </BrowserRouter>
-      
+    </BrowserRouter>      
   );
 }
 

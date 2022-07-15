@@ -1,88 +1,61 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;400&display=swap');
-@import "../../node_modules/bootstrap/scss/functions";
+// @mixin button-auth-form {
+//     margin: 20px;
+//     padding: 10px 20px 10px 20px;
+//     border: none;
+//     transition: 0.3s ease-in-out;
+//     background-color: theme-color("tertiary");
+//     color: $white;
+//     font-weight: bolder;
+//     &:hover {
+//         box-shadow: 1px 4px 10px 2px $grey;
+//     }
+//     &:disabled {
+//         background-color: lighten($tertiary, 30%);
+//         color: black;
+//         box-shadow: none;
+//     }
+// }
 
-$primary: #FD2D01;
-$secondary: #FFD7D7;
-$tertiary: #4E5166;
-$grey: #eeeeee;
-$white: #ffffff;
-$grey: #eeeeee;
-$black: #000000;
-$danger: #fd0101;
+// @mixin button-active-mode {
+//     text-decoration: none;
+//     margin: 5px;
+//     padding: 10px 20px 10px 20px;
+//     border: none;
+//     transition: 0.3s ease-in-out;
+//     background-color: $primary;
+//     color: $white;
+//     font-weight: bolder;
+//     &:hover {
+//         color: $white;
+//     }
+// }
 
-$theme-colors: (
-    "primary": $primary,
-    "secondary": $secondary,
-    "tertiary": $tertiary,
-    "white": $white,
-    "grey": $grey,
-    "black": $black,
-    "danger" : $danger
-);
+// @mixin button-log-mode {
+//     text-decoration: none;
+//     margin: 5px;
+//     padding: 10px 20px 10px 20px;
+//     border: none;
+//     transition: 0.3s ease-in-out;
+//     color: black;
+//     font-weight: bolder;
+//     &:hover {
+//         background-color: $secondary;
+//         color: black;
+//     }
+// }
 
-@mixin button-auth-form {
-    margin: 20px;
-    padding: 10px 20px 10px 20px;
-    border: none;
-    transition: 0.3s ease-in-out;
-    background-color: theme-color("tertiary");
-    color: $white;
-    font-weight: bolder;
-    &:hover {
-        box-shadow: 1px 4px 10px 2px $grey;
-    }
-    &:disabled {
-        background-color: lighten($tertiary, 30%);
-        color: black;
-        box-shadow: none;
-    }
-}
+// @mixin input-auth-form {
+//     text-overflow: ellipsis;
+//     white-space: nowrap;
+//     overflow: hidden;
+//     &:focus {
+//         box-shadow: none;
+//         border: $primary solid 2px;
+//         transition: 0.3s ease-in-out;
+//     }
+// }
 
-@mixin button-active-mode {
-    text-decoration: none;
-    margin: 5px;
-    padding: 10px 20px 10px 20px;
-    border: none;
-    transition: 0.3s ease-in-out;
-    background-color: $primary;
-    color: $white;
-    font-weight: bolder;
-    &:hover {
-        color: $white;
-    }
-}
-
-@mixin button-log-mode {
-    text-decoration: none;
-    margin: 5px;
-    padding: 10px 20px 10px 20px;
-    border: none;
-    transition: 0.3s ease-in-out;
-    color: $black;
-    font-weight: bolder;
-    &:hover {
-        background-color: $secondary;
-        color: $black;
-    }
-}
-
-@mixin input-auth-form {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    &:focus {
-        box-shadow: none;
-        border: $primary solid 2px;
-        transition: 0.3s ease-in-out;
-    }
-}
-
-@mixin social-network {
-    font-size: 50px;
-    margin: 4px;
-}
-
-@import "../../node_modules/bootstrap/scss/variables";
-@import "../../node_modules/bootstrap/scss/mixins";
-
-
+// @mixin social-network {
+//     font-size: 50px;
+//     margin: 4px;
+// }

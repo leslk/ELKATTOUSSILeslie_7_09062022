@@ -7,7 +7,6 @@ require("dotenv").config({path : "./config/.env"});
 
 
 exports.createPost = (req, res, next) => {
-    console.log(req.body);
     let post = {};
     if(req.file) {
         post = new Post({
@@ -23,7 +22,7 @@ exports.createPost = (req, res, next) => {
         });
     }
     post.save()
-    .then(() => res.status(201).json({message: "Post Créé !"}))
+    .then(() => res.status(201).json(post))
     .catch(error => res.status(400).json({ error }));
 };
 
@@ -41,28 +40,29 @@ exports.getAllPosts = (req, res, next) => {
     .catch(error => res.status(400).json({error}));
 };
 
-exports.updatePost = (req, res, next) => {
-    let updatedPost = {};
-    if(req.file) {
-        Post.findOne({_id : req.params.id}) 
-        .then((post) => {
-            const fileName = post.imageUrl.split("/images/");
-            fs.unlinkSync(`images/${fileName}`)
-        })
-        updatedPost = {
-            ...JSON.parse(req.body.post),
-            imageUrl : `${process.env.HOST}/images/${req.file.filename}`
+exports.updatePost = async (req, res, next) => {
+    const post = await Post.findOne({_id : req.body.id})
+    let imageUrl = post.imageUrl;
+
+    if(req.file) { 
+        if (imageUrl) {
+            const fileName = imageUrl.split("/images/")[1];
+            fs.unlinkSync(`images/${fileName}`);
         }
-    } else {
-        updatedPost = {
-            ...req.body
-        }
+        imageUrl = `${process.env.HOST}/images/${req.file.filename}`
+    } 
+    else if(req.deleteImage === "true"){
+        const fileName = imageUrl.split("/images/")[1];
+        fs.unlinkSync(`images/${fileName}`);
+        imageUrl = null;
     }
-    Post.updateOne({ _id: req.params.id}, {
-        updatedPost,
-        _id : req.params.id,
+    Post.findOneAndUpdate({ _id: req.body.id}, {
+        ...req.body,
+        imageUrl: imageUrl 
+    }, {new: true})
+    .then((post) => {
+        return res.status(200).json(post)
     })
-    .then(() => res.status(200).json({message: 'Post modifié !'}))
     .catch((error) => res.status(400).json({error}));
 };
 
@@ -71,13 +71,10 @@ exports.deletePost = (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
     const userId = decodedToken.userId;
-    console.log(userId);
 
     Post.findOne({_id: req.body.id})
     .then(post => {
-        console.log(post)
         if (post.userId != userId) {
-            console.log(userId)
             return res.status(401).json("requête non autorisée !");
         }
         if (post.imageUrl) {
@@ -85,7 +82,7 @@ exports.deletePost = (req, res, next) => {
             fs.unlinkSync(`images/${fileName}`)
         }
         Post.deleteOne({ _id: req.body.id })
-        .then(() => res.status(200).json({ message: "Post supprimé !"}))
+        .then(() => res.status(200).json({ id: post._id}))
         .catch(error => res.status(400).json({ error: error })); 
     })
     .catch(error => res.status(500).json({error: error}));
