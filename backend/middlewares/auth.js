@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
 
         // Check if request body userId exist 
         // if it doesn't match with userId == throw error
-        if (req.body.userId && req.body.userId !== userId) {
+        if (req.body.userId && req.body.userId != userId) {
             throw "requête non authentifiée !";
         } else {
             next();

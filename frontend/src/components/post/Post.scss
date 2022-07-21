@@ -1,0 +1,12 @@
+@import "../../scss/variables";
+@import "../../scss/mixins";
+
+.post-container {
+    max-width: 800px;
+}
+
+.dropup .dropdown-toggle {
+    &::after {
+        display: none;
+    }
+}

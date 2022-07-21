@@ -1,0 +1,44 @@
+@import "./variables";
+@import "./animations";
+
+@mixin primary-btn {
+    transition: 0.3s ease-in-out;
+    font-weight: bolder;
+    &:hover {
+        color: white;
+        box-shadow: none;
+        &:focus {
+            box-shadow: none;
+        }
+    }
+}
+
+@mixin secondary-btn {
+    transition: 0.3s ease-in-out;
+    font-weight: bolder;
+    &:hover {
+        background-color: $secondary-color;
+        color: black;
+        box-shadow: none;
+        &:focus {
+        box-shadow: none;
+        }
+    }
+}
+
+@mixin like-pulse {
+    &:hover {
+        animation: pulse 1s 0.3s infinite;
+    }
+}
+
+@mixin fill {
+    animation: fillheart 1s ease-in-out;
+}
+
+@mixin toggle {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}

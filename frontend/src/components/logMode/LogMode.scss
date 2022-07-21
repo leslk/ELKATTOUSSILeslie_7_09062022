@@ -1,8 +1,24 @@
+@import "../../scss/variables";
+@import "../../scss/mixins";
 
-// .active-btn {
-//     @include button-active-mode;
-// }
+.btn {
+    margin: 5px;
+    padding: 10px 20px 10px 20px;
+}
 
-// .auth-btn {
-//    @include button-log-mode;
-// }
+.log-btn {
+    text-decoration: none;
+    border: none;  
+}
+
+.auth-btn {
+    text-decoration: none;
+    border: none;
+    @include secondary-btn;
+}
+
+.active-btn {
+    text-decoration: none;
+    border: none;
+    @include primary-btn;
+}

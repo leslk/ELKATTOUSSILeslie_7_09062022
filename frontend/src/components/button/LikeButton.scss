@@ -1,0 +1,18 @@
+@import "../../scss/mixins";
+
+.like-btn {
+    z-index: 2;
+    &__empty {
+        @include like-pulse;
+    }
+    &__red {
+        @include fill;
+    }
+
+}
+
+.likes-count {
+    z-index: 1;
+    top: 0;
+    left: 120%;
+}

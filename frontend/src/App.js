@@ -6,7 +6,7 @@ import AuthContext from "./context/AuthContext";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import LoginForm from "./components/loginForm/LoginForm";
-import SignupForm from "./components/signupForm/signupForm";
+import SignupForm from "./components/loginForm/signupForm";
 import AuthenticatedRoute from "./components/AutenticatedRoute";
 import PostList from "./components/post/PostList";
 // React
@@ -22,6 +22,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    { console.log('app browser router')}
       <AuthContext.Provider value={{user, setUser}}>
         <Header />
         <Routes>

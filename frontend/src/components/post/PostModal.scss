@@ -1,7 +1,6 @@
 @import "../../scss/variables";
 @import "../../scss/mixins";
 
-
-.create-post-btn {
+.publish-btn {
     @include primary-btn;
 }

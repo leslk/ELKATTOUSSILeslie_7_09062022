@@ -8,14 +8,14 @@ function LogMode(props) {
         <nav className="auth-form container">
                 <div className="d-flex justify-content-center mb-5">
                     <Link 
-                    className={props.mode == 'signup' ? "active-btn rounded-pill" : "auth-btn rounded-pill"} 
+                    className={props.mode === 'signup' ? "log-btn active-btn btn btn-primary rounded-pill text-white" : "log-btn auth-btn btn rounded-pill text-black"} 
                     to="/signup"
                     >
                         S'inscrire
                     </Link> 
                   
                     <Link 
-                    className={props.mode == 'login' ? "active-btn rounded-pill" : "auth-btn rounded-pill"}
+                    className={props.mode === 'login' ? "log-btn active-btn btn btn-primary rounded-pill text-white" : "log-btn auth-btn btn rounded-pill text-black"}
                     to="/login"
                     >
                         Se connecter

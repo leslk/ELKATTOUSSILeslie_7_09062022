@@ -1,7 +1,6 @@
 import {useState, useContext} from "react";
-import {Form} from "react-bootstrap";
-import "./signupForm.scss";
-import Button from "../button/Button";
+import {Form, Button} from "react-bootstrap";
+import "./AuthForm.scss";
 import PasswordValidator from "../passwordValidator/PasswordValidator";
 import {AiOutlineEyeInvisible} from "react-icons/ai";
 import {AiOutlineEye} from "react-icons/ai";
@@ -131,11 +130,11 @@ function Signup() {
     return (
         <main className="container py-5">
             <LogMode mode="signup"/>
-            <h1 className="signup-title text-center">Bienvenue sur le réseau social <br/> de Groupomania</h1>
-            <Form className="w-75 m-auto">
+            <h1 className="text-center text-tertiary">Bienvenue sur le réseau social <br/> de Groupomania</h1>
+            <Form className="auth-form w-75 m-auto">
                 <Form.Label htmlFor="pseudo">Pseudo</Form.Label>
                 <Form.Control 
-                className="rounded-pill" 
+                className="auth-form__control rounded-pill" 
                 onChange={(e) => {handleChange(e); handlePseudo(e)}} 
                 onFocus={() => setPasswordOnFocus(false)}
                 value={credentials.pseudo} 
@@ -147,7 +146,7 @@ function Signup() {
                 <p className="text-danger">{pseudoError}</p>
                 <Form.Label htmlFor="email">E-mail</Form.Label>
                 <Form.Control 
-                className="rounded-pill" 
+                className="auth-form__control rounded-pill" 
                 onFocus={() => setPasswordOnFocus(false)}
                 onChange={(e) => {handleChange(e); handleEmail(e)}} 
                 value={credentials.email} 
@@ -159,7 +158,7 @@ function Signup() {
                 <p className="text-danger">{emailError}</p>
                 <Form.Label  htmlFor="password">Mot de passe</Form.Label>
                 <div className="d-flex position-relative align-items-center">
-                    <Form.Control className="rounded-pill"
+                    <Form.Control className="auth-form__control rounded-pill"
                     onFocus={() => setPasswordOnFocus(true)} 
                     onChange={(e) => {handlePassword(e); handleChange(e)}} value={credentials.password} 
                     id="password" 
@@ -167,15 +166,18 @@ function Signup() {
                     type={showPassword ? "text" : "password"} 
                     required
                     />
-                    {showPassword ? <AiOutlineEye className="password-icon" onClick={() => setShowPassword(false)}/>: <AiOutlineEyeInvisible className="password-icon" onClick={() => setShowPassword(true)}/> }
+                    {showPassword ? <AiOutlineEyeInvisible className="password-icon" onClick={() => setShowPassword(false)}/>: <AiOutlineEye className="password-icon" onClick={() => setShowPassword(true)}/> }
                 </div>
                 <p className="text-danger">{passwordError}</p>
                 {passwordOnFocus ? <PasswordValidator {...passwordValidity}/> : null}
             </Form>
             <div className="text-center">
-                <Button onClick={handleForm}  
-                text="Inscription" 
-                disabled={!emailRegex.test(credentials.email) || !passwordValidity.passwordLength || credentials.pseudo.length < 3}/>
+                <Button 
+                type="button"
+                variant="tertiary"
+                className="text-white rounded-pill"
+                onClick={handleForm}  
+                disabled={!emailRegex.test(credentials.email) || !passwordValidity.passwordLength || credentials.pseudo.length < 3}>Inscription</Button>
             </div>   
         </main>
     )

@@ -8,6 +8,7 @@ $white: #ffffff;
 $grey: #eeeeee;
 $black: #000000;
 $danger: #fd0101;
+$light: #f8f9fa;
 
 $theme-colors: (
     "primary": $primary,
@@ -16,7 +17,8 @@ $theme-colors: (
     "white": $white,
     "grey": $grey,
     "black": $black,
-    "danger" : $danger
+    "danger" : $danger,
+    "light" : $light
 );
 
 * {

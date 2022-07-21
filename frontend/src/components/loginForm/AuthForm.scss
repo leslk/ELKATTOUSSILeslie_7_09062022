@@ -1,0 +1,24 @@
+@import "../../scss/variables";
+
+.auth-form {
+    max-width: 400px;
+    margin-bottom: calc(16px + 2em);
+    &__control {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        &:focus {
+            box-shadow: none;
+            border: $primary-color solid 2px;
+            transition: 0.3s ease-in-out;
+        }
+    }
+}
+
+.password-icon {
+    font-size: 20px;
+    margin-left: 15px;
+    background-color: white;
+    position: absolute;
+    right: 10px;
+}

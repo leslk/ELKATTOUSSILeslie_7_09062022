@@ -1,7 +1,7 @@
 import {useContext, useState} from "react";
 import {Form} from "react-bootstrap";
-import "./LoginForm.scss";
-import Button from "../button/Button";
+import "./AuthForm.scss";
+import Button from "react-bootstrap/Button";
 import {AiOutlineEyeInvisible} from "react-icons/ai";
 import {AiOutlineEye} from "react-icons/ai";
 import LogMode from "../logMode/LogMode";
@@ -73,10 +73,10 @@ function LoginForm() {
         
         <main className="container py-5">
             <LogMode mode="login"/>
-            <h1 className="login-title text-center">Connectez-vous</h1>
-            <Form className="w-75 m-auto">
+            <h1 className="text-center text-tertiary">Connectez-vous</h1>
+            <Form className="auth-form w-75 m-auto">
                 <Form.Label htmlFor="email">E-mail</Form.Label>
-                <Form.Control className="rounded-pill" 
+                <Form.Control className="auth-form__control rounded-pill" 
                 onChange={handleChange} 
                 value={credentials.email} 
                 id="email" 
@@ -88,7 +88,7 @@ function LoginForm() {
                 <Form.Label  htmlFor="password">Mot de passe</Form.Label>
                 <div className="d-flex position-relative align-items-center">
                     <Form.Control 
-                    className="rounded-pill" 
+                    className="auth-form__control rounded-pill" 
                     onChange={handleChange} 
                     value={credentials.password} 
                     id="password" 
@@ -96,14 +96,17 @@ function LoginForm() {
                     type={showPassword ? "text" : "password"} 
                     required
                     />
-                    {showPassword ? <AiOutlineEye className="password-icon" onClick={() => setShowPassword(false)}/>: <AiOutlineEyeInvisible className="password-icon" onClick={() => setShowPassword(true)}/> }
+                    {showPassword ? <AiOutlineEyeInvisible className="password-icon" onClick={() => setShowPassword(false)}/>: <AiOutlineEye className="password-icon" onClick={() => setShowPassword(true)}/> }
                 </div>
                 <p className="text-danger">{passwordError}</p>
                 <div className="text-center">
-                    <Button onClick={handleForm} 
-                    text="Connexion" 
+                    <Button
+                    type="button"
+                    variant="tertiary"
+                    className="text-white rounded-pill"
+                    onClick={handleForm} 
                     disabled={!emailRegex.test(credentials.email) || credentials.password.length < 8}
-                    />
+                    >Connexion</Button>
                 </div>
             </Form>
         </main> 

@@ -1,8 +1,8 @@
-import { useRef, useContext, useState } from "react";
-import {Form, Modal} from "react-bootstrap";
+import {useContext, useState } from "react";
+import {Button} from "react-bootstrap";
 import AuthContext from "../../context/AuthContext";
+import {BsPencilSquare} from "react-icons/bs";
 import "./CreatePost.scss";
-import Button from "../button/Button";
 import PostModal from "./PostModal";
 
 function CreatePost(props) {
@@ -12,13 +12,14 @@ function CreatePost(props) {
 
     return (
 
-    <div className="col m-3">
+    <div className="col m-3 text-center">
             {/* <h1>Bonjour {props.user.pseudo}</h1> */}
            <Button
+           variant="primary"
+           className="create-post-btn text-white rounded-pill"
            type="button"
             onClick={() => setShowModal(true)}
-           text="Créer un post"/>
-
+           ><span className="p-2"><BsPencilSquare size={20}/></span> Créer un post</Button>
            {showModal ? 
                 <PostModal headerText="Nouvelle publication" buttonText="publier" handlePost={props.handlePost} showModal={showModal} setShowModal={setShowModal}/>
              : null}

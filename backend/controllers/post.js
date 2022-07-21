@@ -41,7 +41,16 @@ exports.getAllPosts = (req, res, next) => {
 };
 
 exports.updatePost = async (req, res, next) => {
-    const post = await Post.findOne({_id : req.body.id})
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
+    const userId = decodedToken.userId;
+
+    const user = await User.findOne({_id: req.body.userId});
+    const post = await Post.findOne({_id : req.body.id});
+
+    if (post.userId != userId && !user.isAdmin) {
+        return res.status(401).json("requête non autorisée !");
+    } 
     let imageUrl = post.imageUrl;
 
     if(req.file) { 
@@ -51,7 +60,7 @@ exports.updatePost = async (req, res, next) => {
         }
         imageUrl = `${process.env.HOST}/images/${req.file.filename}`
     } 
-    else if(req.deleteImage === "true"){
+    else if (req.body.deleteImage === "true") {
         const fileName = imageUrl.split("/images/")[1];
         fs.unlinkSync(`images/${fileName}`);
         imageUrl = null;
@@ -61,20 +70,23 @@ exports.updatePost = async (req, res, next) => {
         imageUrl: imageUrl 
     }, {new: true})
     .then((post) => {
+        console.log(post);
         return res.status(200).json(post)
     })
     .catch((error) => res.status(400).json({error}));
 };
 
-exports.deletePost = (req, res, next) => {
+exports.deletePost = async (req, res, next) => {
     // Decode token
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
     const userId = decodedToken.userId;
 
+    const user = await User.findOne({_id: req.body.userId});
+
     Post.findOne({_id: req.body.id})
     .then(post => {
-        if (post.userId != userId) {
+        if (post.userId != userId && !user.isAdmin) {
             return res.status(401).json("requête non autorisée !");
         }
         if (post.imageUrl) {

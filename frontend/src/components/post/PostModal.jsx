@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
-import {Form, Modal} from "react-bootstrap";
+import {Form, Modal, Button} from "react-bootstrap";
+import "./PostModal.scss";
 
 function PostModal(props) {
     const fileRef = useRef();
@@ -51,10 +52,12 @@ function PostModal(props) {
     return (
         <Modal 
                 show={props.showModal} 
+                aria-labelledby={props.headerText}
                 onHide={() => props.setShowModal(false)}
+                centered
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>{props.headerText}</Modal.Title>
+                        <Modal.Title id={props.headerText}>{props.headerText}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form.Group
@@ -75,14 +78,15 @@ function PostModal(props) {
                         <Form.Group 
                         className="mb-3"
                         >
-                            {showImage ? <div className="post-image-container text-center"><img className="post-image img-fluid mb-3" src={image} alt="" /></div> : null}
-                            <button 
+                            {showImage ? <div className="post-image__container text-center"><img className="post-image img-fluid mb-3" src={image} alt="" /></div> : null}
+                            <Button 
+                                variant="outline-tertiary"
                                 type="button" 
-                                className="image-btn rounded-pill" 
+                                className="post-image__btn rounded-pill" 
                                 onClick={image != null ? handleReset : () => fileRef.current.click()}
                             >
                                 {image != null ? "Supprimer l'image" : "Ajouter une image"}
-                            </button>
+                            </Button>
                             <Form.Control
                                 name="image"
                                 ref={fileRef}
@@ -96,21 +100,22 @@ function PostModal(props) {
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <button 
+                        <Button 
                             onClick={(e) => {
                                     if (props.buttonText === "publier") {
                                         props.handlePost(e, fileRef, textContent);   
                                     } else {
-                                        props.handleUpdate(e, props.id, fileRef, textContent, deleteImage);
+                                        props.handleUpdate(e, props.id, fileRef, textContent, deleteImage, props.userId);
                                     } 
                                     props.setShowModal(false);  
                                 }   
                             // }
                         }
-                            className="rounded-pill m-2 send-btn"
+                        variant="tertiary"
+                        className="publish-btn rounded-pill m-2"
                         >
                             {props.buttonText}
-                        </button>
+                        </Button>
                     </Modal.Footer>
                 </Modal>
     )

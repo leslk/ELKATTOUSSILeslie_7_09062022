@@ -8,21 +8,22 @@ function PostList(props) {
     const [postList, setPostList] = useState([]);
     const {user} = useContext(AuthContext);
 
+    // Use effect joué une seule fois au chargement de la page pour récupérer la data
     useEffect(() => {
+        console.log('use effect');
+        // Récupérer les posts de la base de donnée avec un s merci
         fetch("http://localhost:3000/api/posts", {
             method: "GET",
             headers: {
                 "Authorization" : `Bearer ${user.token}`
-            },
-            body: JSON.stringify({
-                userId: user.userId
-            })
+            }
         })
         .then(res => res.json())
         .then((data) => {
+            // Set postlist en local après avoir trié par date
             sortByDate(data);
             setPostList(data);
-        }) 
+        });
     }, []);
 
     function handlePost(e, fileRef, textContent) {
@@ -47,7 +48,6 @@ function PostList(props) {
     }
 
     function handleDelete(postId) {
-        console.log(postId, user.userId);
         fetch(`http://localhost:3000/api/posts/${postId}`, {
             method: "DELETE",
             headers: {
@@ -69,17 +69,16 @@ function PostList(props) {
         .catch(err => console.log(err))
     }
 
-    function handleUpdate(e, postId, fileRef, textContent, deleteImage) {
+    function handleUpdate(e, postId, fileRef, textContent, deleteImage, creatorId) {
         e.preventDefault();
         let formData = new FormData();
-        formData.append('userId', user.userId);
+        formData.append('userId', user.isAdmin ? creatorId : user.userId);
         formData.append("id", postId);
         formData.append('textContent', textContent);
-        formData.append('deleteImage', deleteImage)
+        formData.append('deleteImage', deleteImage);
         if (fileRef.current.files[0]) {
             formData.append('image', fileRef.current.files[0]);
         }
-        formData.forEach((e) => console.log(e));
         fetch(`http://localhost:3000/api/posts/${postId}`,{
             method : "PUT",
             headers : {
@@ -88,9 +87,10 @@ function PostList(props) {
             body: formData,
         })
         .then((res) => res.json())
-        .then((newPost) => {
-            const index = postList.findIndex((element) => element._id === newPost._id);
-            const newPostList = postList.splice(index, 1, newPost);
+        .then((updatedPost) => {
+            const index = postList.findIndex((element) => element._id === updatedPost._id);
+            postList[index].textContent = updatedPost.textContent;
+            postList[index].imageUrl = updatedPost.imageUrl;
             setPostList([...postList]);
         });
     }
