@@ -11,6 +11,7 @@ import { Dropdown } from "react-bootstrap";
 import DropdownMenu from "react-bootstrap/esm/DropdownMenu";
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import DropdownToggle from "react-bootstrap/esm/DropdownToggle";
+import { checkErrorsAndGetData } from "../../services/errorTools";
 
 function Post(props) {
 
@@ -20,8 +21,8 @@ function Post(props) {
     const [like, setLike] = useState(props.usersLiked.includes(user.userId) ? 1 : 0);
     const [likesCount, setLikesCount] = useState(props.likes);
 
-    async function handleLike(n) {
-        const res = await fetch(`http://localhost:3000/api/posts/${props.id}/like`, {
+    function handleLike(n) {
+        fetch(`http://localhost:3000/api/posts/${props.id}/like`, {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -33,18 +34,17 @@ function Post(props) {
                 like: n,
                 userId: user.userId
             })
-        });
-
-        if (res.status === 200) {
+        })
+        .then(res => checkErrorsAndGetData(res))
+        .then(() => {
             setLike(n);
             setLikesCount(n === 0 ? likesCount - 1 : likesCount + 1);
-        }
-        // .then((res) => {})
-        // .catch(err => console.log(err))
+        }) 
+        .catch(error => alert(error.message));
     }
 
     return (
-        <article className="post-container shadow container bg-light rounded-3 col-10 col-md-6 col-lg-8 mb-3 p-3">
+        <article className="post-container shadow container bg-light rounded-3 col-12 col-md-10 col-lg-8 mb-3 p-3">
             <div className="d-flex position-relative align-items-center mb-3">
                 <div>
                     <img className="img-fluid w-75 rounded-circle border border-2 border-grey" src={logo} alt="logo groupomania"/>
@@ -55,9 +55,8 @@ function Post(props) {
                 </div>
                 {/* {(props.userId === user.userId) || user.isAdmin ? */}
                 <Dropdown
-                drop="up"
                 className="position-absolute top-0 end-0">
-                    <DropdownToggle className="bg-transparent shadow-none border-light p-0"><BsThreeDots size={24}/></DropdownToggle>
+                    <DropdownToggle className="bg-transparent shadow-none border-light p-0 m-0"><BsThreeDots size={24}/></DropdownToggle>
                     <DropdownMenu>
                         <DropdownItem 
                         onClick={() => setShowModal(true)}
@@ -71,7 +70,7 @@ function Post(props) {
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
-                {/* //  : null} */}
+                {/* : null} */}
                 {showModal ? <PostModal imageUrl={props.imageUrl} id={props.id} textContent={props.textContent} image={props.imageUrl} userId={props.userId} headerText="Modifier la publication" buttonText="enregistrer les modifications"showModal={showModal} setShowModal={setShowModal} handleUpdate={props.handleUpdate}/> : null}
                 
             </div>
@@ -87,9 +86,6 @@ function Post(props) {
                 handleLike={handleLike} 
                 like={like}
                 />
-                {/* <div className="d-flex">
-                    <p className="m-0 p-3">{likesCount}{likesCount <= 1 ? " Like" : " Likes"}</p>
-                </div> */}
             </div>
         </article>
     )  

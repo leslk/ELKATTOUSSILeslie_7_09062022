@@ -28,7 +28,7 @@
 
 @mixin like-pulse {
     &:hover {
-        animation: pulse 1s 0.3s infinite;
+        animation: pulse 1s 0.3s forwards;
     }
 }
 

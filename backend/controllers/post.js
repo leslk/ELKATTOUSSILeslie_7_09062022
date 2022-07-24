@@ -23,7 +23,7 @@ exports.createPost = (req, res, next) => {
     }
     post.save()
     .then(() => res.status(201).json(post))
-    .catch(error => res.status(400).json({ error }));
+    .catch(error => res.status(500).json({ error }));
 };
 
 exports.getAllPosts = (req, res, next) => {
@@ -49,7 +49,7 @@ exports.updatePost = async (req, res, next) => {
     const post = await Post.findOne({_id : req.body.id});
 
     if (post.userId != userId && !user.isAdmin) {
-        return res.status(401).json("requête non autorisée !");
+        return res.status(403).json("requête non autorisée !");
     } 
     let imageUrl = post.imageUrl;
 
@@ -87,15 +87,16 @@ exports.deletePost = async (req, res, next) => {
     Post.findOne({_id: req.body.id})
     .then(post => {
         if (post.userId != userId && !user.isAdmin) {
-            return res.status(401).json("requête non autorisée !");
+            return res.status(403).json("requête non autorisée !");
         }
         if (post.imageUrl) {
             const fileName = post.imageUrl.split("/images/")[1];
             fs.unlinkSync(`images/${fileName}`)
         }
+
         Post.deleteOne({ _id: req.body.id })
         .then(() => res.status(200).json({ id: post._id}))
-        .catch(error => res.status(400).json({ error: error })); 
+        .catch(error => res.status(500).json({ error: error })); 
     })
     .catch(error => res.status(500).json({error: error}));
 };
@@ -106,7 +107,7 @@ exports.addLikeToPost = (req, res, next) => {
         switch(req.body.like) {
             case 1 : 
                 if(post.usersLiked.includes(req.body.userId)) {
-                    res.status(400).json({error: "Vous avez deja liké ce post"}); 
+                    res.status(400).json("Vous avez deja liké ce post"); 
                 } else {
                     Post.updateOne({_id: req.body.id},
                         {$push : {usersLiked: req.body.userId},
@@ -114,7 +115,7 @@ exports.addLikeToPost = (req, res, next) => {
                     .then(() => {
                         res.status(200).json({message: "vous avez ajouté un like"});
                     })
-                    .catch(error => res.status(400).json({ error }));    
+                    .catch(error => res.status(500).json({ error }));    
                 }
                 break;
 
@@ -128,7 +129,7 @@ exports.addLikeToPost = (req, res, next) => {
                     })
                     .catch(error => res.status(500).json({error}));
                 } else {
-                    return res.status(400).json({error: "Vous devez liké ce post pour pouvoir effectuer cette requête"})
+                    return res.status(400).json("Vous devez liker ce post pour pouvoir effectuer cette requête")
                 }
                 break;
         }
