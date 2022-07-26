@@ -7,13 +7,11 @@ import PostModal from "./PostModal";
 
 function CreatePost(props) {
 
-    const {user} = useContext(AuthContext);
     const [showModal, setShowModal] = useState(false);
 
     return (
 
     <div className="col m-3 text-center">
-            {/* <h1>Bonjour {props.user.pseudo}</h1> */}
            <Button
            variant="primary"
            className="create-post-btn text-white rounded-pill"

@@ -4,13 +4,16 @@ import AuthContext from "../../context/AuthContext";
 import {createDate, sortByDate} from "../../services/dateTools";
 import CreatePost from "./CreatePost";
 import {checkErrorsAndGetData} from "../../services/errorTools";
+import { hasAuthenticated } from "../../services/authTools";
 
 function PostList(props) {
     const [postList, setPostList] = useState([]);
+    const [newPostList, setNewPostList] = useState([]);
     const {user} = useContext(AuthContext);
 
     // Use effect joué une seule fois au chargement de la page pour récupérer la data
     useEffect(() => {
+        console.log("re-render useEffect");
         // Récupérer les posts de la base de donnée avec un s merci
         fetch("http://localhost:3000/api/posts", {
             method: "GET",
@@ -25,7 +28,7 @@ function PostList(props) {
             setPostList(data);
         })
         .catch(error => alert(error.message));
-    }, []);
+    }, [newPostList]);
 
     function handlePost(e, fileRef, textContent) {
         e.preventDefault();
@@ -36,14 +39,14 @@ function PostList(props) {
         fetch("http://localhost:3000/api/posts",{
             method : "POST",
             headers : {
-                // "Authorization" : `Bearer ${user.token}`,
+                "Authorization" : `Bearer ${user.token}`,
             },
             body: formData
         })
         .then(res => checkErrorsAndGetData(res))
         .then((newPost) => {
             newPost = {...newPost, pseudo: user.pseudo};
-            setPostList([newPost, ...postList]);
+            setNewPostList([newPost, ...postList]);
         })
         .catch(error => alert(error.message));
         
@@ -63,10 +66,10 @@ function PostList(props) {
             })
         })
         .then(res => checkErrorsAndGetData(res))
-        .then(data => {
-            const index = postList.findIndex((element) => element._id === data.id);
-            postList.splice(index, 1);
-            setPostList([...postList]);
+        .then(() => {
+            // const index = postList.findIndex((element) => element._id === data.id);
+            // postList.splice(index, 1);
+            setNewPostList([...postList]);
         })
         .catch(error => alert(error.message));
     }
@@ -89,11 +92,11 @@ function PostList(props) {
             body: formData,
         })
         .then((res) => checkErrorsAndGetData(res))
-        .then((updatedPost) => {
-            const index = postList.findIndex((element) => element._id === updatedPost._id);
-            postList[index].textContent = updatedPost.textContent;
-            postList[index].imageUrl = updatedPost.imageUrl;
-            setPostList([...postList]);
+        .then(() => {
+            // const index = postList.findIndex((element) => element._id === updatedPost._id);
+            // postList[index].textContent = updatedPost.textContent;
+            // postList[index].imageUrl = updatedPost.imageUrl;
+            setNewPostList([...postList]);
         })
         .catch(error => alert(error.message));
     }

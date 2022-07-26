@@ -7,6 +7,9 @@ require("dotenv").config({path : "./config/.env"});
 
 
 exports.createPost = (req, res, next) => {
+    if (req.body.textContent.length < 2 || req.body.textContent.length > 500) {
+        return res.status(400).json("Vous devez renseigner au moins un message de deux caractères minimum pour pouvoir publier")
+    }
     let post = {};
     if(req.file) {
         post = new Post({
@@ -48,6 +51,9 @@ exports.updatePost = async (req, res, next) => {
     const user = await User.findOne({_id: req.body.userId});
     const post = await Post.findOne({_id : req.body.id});
 
+    if (req.body.textContent.length < 2 || req.body.textContent.length > 500) {
+        return res.status(400).json("Vous devez renseigner au moins un message de deux caractères minimum pour pouvoir publier")
+    }
     if (post.userId != userId && !user.isAdmin) {
         return res.status(403).json("requête non autorisée !");
     } 
@@ -70,7 +76,6 @@ exports.updatePost = async (req, res, next) => {
         imageUrl: imageUrl 
     }, {new: true})
     .then((post) => {
-        console.log(post);
         return res.status(200).json(post)
     })
     .catch((error) => res.status(400).json({error}));

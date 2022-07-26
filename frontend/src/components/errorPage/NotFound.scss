@@ -1,0 +1,5 @@
+@import "../../scss/mixins";
+
+.not-found-btn {
+    @include primary-btn;
+}

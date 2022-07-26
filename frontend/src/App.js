@@ -15,14 +15,15 @@ import React from "react";
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom"
 // Services
 import { hasAuthenticated } from "./services/authTools";
+import { NotFound } from "./components/errorPage/NotFound";
 
 
 function App() {
   const [user, setUser] = useState(hasAuthenticated());
+  console.log("app re-render");
 
   return (
     <BrowserRouter>
-    { console.log('app browser router')}
       <AuthContext.Provider value={{user, setUser}}>
         <Header />
         <Routes>
@@ -30,10 +31,9 @@ function App() {
           <Route exact path="/login" element={<LoginForm/>}/>
           <Route element={<AuthenticatedRoute/>}>
             <Route exact path="/" element={<Navigate to="/posts" replace={true}/>} />
-            <Route path="/posts" element={<PostList/>} />
+            <Route exact path="/posts" element={<PostList/>} />
           </Route>
-          {/*Check another method to block unexisting routes*/}
-          <Route path='*' element={<p>Not Found</p>}/>
+          <Route path='/*' element={<NotFound/>}/>
         </Routes>
         <Footer/>
       </AuthContext.Provider>

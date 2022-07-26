@@ -40,6 +40,8 @@ footer {
     width:100%;
 }
 
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
 a {
     color: $black;
     text-decoration: none;
@@ -50,5 +52,5 @@ a:hover {
     color: $black;
 }
 
-@import "../../node_modules/bootstrap/scss/bootstrap";
+
 

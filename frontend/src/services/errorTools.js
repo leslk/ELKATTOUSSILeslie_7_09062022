@@ -1,4 +1,4 @@
-export async function checkErrorsAndGetData(res) {
+export async function checkErrorsAndGetData(res, error) {
     console.log(res.status);
     switch (res.status) {
         case 401 : 
@@ -15,23 +15,3 @@ export async function checkErrorsAndGetData(res) {
             throw Error("une erreur est survenue");
     }
 }
-
-// function handleError(status) {
-//     switch (status) {
-//         case 401 : 
-//             alert("requête non authentifiée");
-//             return false;
-
-//         case 403 : 
-//             alert("requête non autorisée");
-//             return false;
-
-//         case 500 : 
-//             alert("une erreur est survenue");
-//             return false;
-
-//         default : 
-//             return true
-
-//     }
-// }

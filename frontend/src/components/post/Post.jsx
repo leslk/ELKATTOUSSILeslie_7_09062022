@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { useState } from "react";
 import AuthContext from "../../context/AuthContext";
-import Button from "react-bootstrap/Button";
 import LikeButton from "../button/LikeButton";
 import PostModal from "./PostModal";
 import "./Post.scss";
@@ -53,10 +52,10 @@ function Post(props) {
                     <h2 className="h5 m-0">{props.pseudo}</h2>
                     <p className="text-tertiary m-0 opacity-75">{props.created}</p>
                 </div>
-                {/* {(props.userId === user.userId) || user.isAdmin ? */}
+                {(props.userId === user.userId) || user.isAdmin ?
                 <Dropdown
                 className="position-absolute top-0 end-0">
-                    <DropdownToggle className="bg-transparent shadow-none border-light p-0 m-0"><BsThreeDots size={24}/></DropdownToggle>
+                    <DropdownToggle className="bg-transparent shadow-none border-light p-0 m-0"><BsThreeDots size={24} aria-label="ouvrir le menu à developper"/></DropdownToggle>
                     <DropdownMenu>
                         <DropdownItem 
                         onClick={() => setShowModal(true)}
@@ -70,7 +69,7 @@ function Post(props) {
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
-                {/* : null} */}
+                : null}
                 {showModal ? <PostModal imageUrl={props.imageUrl} id={props.id} textContent={props.textContent} image={props.imageUrl} userId={props.userId} headerText="Modifier la publication" buttonText="enregistrer les modifications"showModal={showModal} setShowModal={setShowModal} handleUpdate={props.handleUpdate}/> : null}
                 
             </div>

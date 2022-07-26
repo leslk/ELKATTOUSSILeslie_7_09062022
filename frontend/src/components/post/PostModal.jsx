@@ -113,6 +113,7 @@ function PostModal(props) {
                         }
                         variant="tertiary"
                         className="publish-btn rounded-pill m-2"
+                        disabled={textContent.length < 2 || textContent.length > 500 || props.textContent < 2 || props.textContent > 500}
                         >
                             {props.buttonText}
                         </Button>
