@@ -16,11 +16,11 @@ import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom"
 // Services
 import { hasAuthenticated } from "./services/authTools";
 import { NotFound } from "./components/errorPage/NotFound";
+import { ErrorServer } from "./components/errorPage/ErrorServer";
 
 
 function App() {
   const [user, setUser] = useState(hasAuthenticated());
-  console.log("app re-render");
 
   return (
     <BrowserRouter>
@@ -33,6 +33,7 @@ function App() {
             <Route exact path="/" element={<Navigate to="/posts" replace={true}/>} />
             <Route exact path="/posts" element={<PostList/>} />
           </Route>
+          <Route exact path="/error-500" element={<ErrorServer/>}/>
           <Route path='/*' element={<NotFound/>}/>
         </Routes>
         <Footer/>

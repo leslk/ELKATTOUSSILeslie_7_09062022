@@ -1,5 +1,4 @@
-export async function checkErrorsAndGetData(res, error) {
-    console.log(res.status);
+export async function checkErrorsAndGetData(res) {
     switch (res.status) {
         case 401 : 
             throw Error("requête non authentifiée");

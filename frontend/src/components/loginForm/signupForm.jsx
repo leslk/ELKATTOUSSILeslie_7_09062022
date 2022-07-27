@@ -12,20 +12,28 @@ import AuthContext from "../../context/AuthContext";
 
 function Signup() {
 
+    // useContext to set the connected user data
     const {setUser} = useContext(AuthContext);
     let navigate = useNavigate();
+    // useState to set credentials for fetching
     const [credentials, setCredentials] = useState({
         pseudo: "",
         email: "",
         password: ""
     });
 
+    // useState to set and display pseudo error
     const [pseudoError, setPseudoError] = useState("");
+    // useState to set and display email error
     const [emailError, setEmailError] = useState("");
+    // useState to set and display password error
     const [passwordError, setPasswordError] = useState("");
+    // useState to set and diplay the password validator component
     const [passwordOnFocus, setPasswordOnFocus] = useState(false);
+    // function to display the password by clicking on the targeted button
     const [showPassword, setShowPassword] = useState(false);
 
+    // useState to check and display password validity
     const [passwordValidity, setPasswordValidity] = useState({
         uppercase: false,
         lowercase: false,
@@ -34,17 +42,20 @@ function Signup() {
         passwordLength: false
     });
 
+    // Regex to check email and password requirements
     const emailRegex = /^([a-zA-Z0-9\.-_]+)@([a-zA-Z0-9-_]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/;
     const uppercaseRegex = /(.*[A-Z])/;
     const lowercaseRegex = /(.*[a-z])/;
     const numbersRegex = /(.*[0-9]{3,})/;
     const symbolRegex = /(.*\W)/;
 
+    // Function to set credentials for fetching
     function handleChange({currentTarget}) {
         const {name, value} = currentTarget;
         setCredentials({...credentials, [name] : value});
     }
 
+    // Function to check pseudo length and display error
     function handlePseudo(e) {
         const pseudoChecker = e.target.value;
         if (pseudoChecker.length < 3) {
@@ -54,6 +65,7 @@ function Signup() {
         }
     }
 
+    // Function to check email and display error
     function handleEmail(e) {
         const emailChecker = e.target.value;
         if (!emailRegex.test(emailChecker)) {
@@ -63,6 +75,7 @@ function Signup() {
         }
     }
 
+    // Function to fetch API to signup and login the user simultaneousy
     function handleForm(e) {
         e.preventDefault();
             fetch("http://localhost:3000/api/auth/signup", {
@@ -106,17 +119,14 @@ function Signup() {
                     } else if (data.errorType === "password") {
                         setPasswordError(data.message)
                     }
-                } else if (res.status === 404) {
-                    // 404 : redirect 404 page
                 } else if (res.status === 500) {
-                    // 500 : redirect page 500
-                } else {
-                     // else : throw error or console log
-                }  
+                    navigate("/error500", {replace: true})
+                }
             })
             .catch((err) => console.log(err));
     }
 
+    // Function to check password validity
     function handlePassword(e) {
         setPasswordValidity({
             uppercase: uppercaseRegex.test(e.target.value),

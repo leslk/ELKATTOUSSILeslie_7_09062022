@@ -14,12 +14,18 @@ import { checkErrorsAndGetData } from "../../services/errorTools";
 
 function Post(props) {
 
+    // Set the alternative image text
     const alt = `image du post de ${props.pseudo} daté du ${props.created}`;
+    // useState to showModal by clicking the targeted button
     const [showModal, setShowModal] = useState(false);
+    // useContext user to access the connected user data
     const {user} = useContext(AuthContext);
+    // useState to set like value (for fetching)
     const [like, setLike] = useState(props.usersLiked.includes(user.userId) ? 1 : 0);
+    // useState to set and display the number of likes for each post
     const [likesCount, setLikesCount] = useState(props.likes);
 
+    // Function to fetch API to like or erase like
     function handleLike(n) {
         fetch(`http://localhost:3000/api/posts/${props.id}/like`, {
             method: "POST",

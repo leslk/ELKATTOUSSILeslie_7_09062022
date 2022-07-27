@@ -1,12 +1,12 @@
-import {useContext, useState } from "react";
+import { useState } from "react";
 import {Button} from "react-bootstrap";
-import AuthContext from "../../context/AuthContext";
 import {BsPencilSquare} from "react-icons/bs";
 import "./CreatePost.scss";
 import PostModal from "./PostModal";
 
 function CreatePost(props) {
 
+    // useState to showModal by clicking the targeted button
     const [showModal, setShowModal] = useState(false);
 
     return (

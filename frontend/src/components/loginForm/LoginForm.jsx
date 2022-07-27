@@ -12,23 +12,32 @@ import { hasAuthenticated } from "../../services/authTools";
 
 function LoginForm() {
 
+    // useContext to set the connected user data
     const {setUser} = useContext(AuthContext);
     let navigate = useNavigate();
+    // useState to set credentials for fetching
     const [credentials, setCredentials] = useState({
         email: "",
         password: ""
     });
 
+    // useState to set and display email error
     const [emailError, setEmailError] = useState("");
+    // useState to set and display password error
     const [passwordError, setPasswordError] = useState("");
+    // function to display the password by clicking on the targeted button
     const [showPassword, setShowPassword] = useState(false);
+
+    // Regex to check email
     const emailRegex = /^([a-zA-Z0-9\.-_]+)@([a-zA-Z0-9-_]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/;
 
+     // Function to set credentials for fetching
     function handleChange({currentTarget}) {
         const {name, value} = currentTarget;
         setCredentials({...credentials, [name] : value});
     }
 
+    // function to fetch API and login the user
     function handleForm(e) {
         e.preventDefault()
         fetch("http://localhost:3000/api/auth/login", {
@@ -57,20 +66,15 @@ function LoginForm() {
                     setPasswordError(data.message);
                     setEmailError('');
                 } 
-            } else if (res.status === 404) {
-                // 404 : redirect 404 page
-            } else if (res.status === 500) {
-                // 500 : redirect page 500
-            } else {
-             // else : throw error or console log
-            }  
+            }  else if (res.status === 500) {
+                navigate("/error500", {replace: true})
+            } 
         })
         .catch((err) => console.log(err));
     }
 
 
     return (
-        
         <main className="container py-5">
             <LogMode mode="login"/>
             <h1 className="text-center text-tertiary">Connectez-vous</h1>

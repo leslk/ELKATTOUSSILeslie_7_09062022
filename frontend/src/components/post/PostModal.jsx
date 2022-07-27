@@ -3,14 +3,23 @@ import {Form, Modal, Button} from "react-bootstrap";
 import "./PostModal.scss";
 
 function PostModal(props) {
+    // useRef to set the choosen file
     const fileRef = useRef();
+    // useState to set the post image
     const [image, setImage] = useState(props.image ? props.image : null);
+    // useState to set and display post image error (file types)
     const [errorImage, setErrorImage] = useState(null);
+    // useState to display the choosen image in modal
     const [showImage, setShowImage] = useState(image !== null);
+    // useState to deleteImage in database
     const [deleteImage, setDeleteImage] = useState(false);
+    // useState to set the post textContent
     const [textContent, setTextContent] = useState(props.textContent ? props.textContent : '');
+    // useState to set the post textContent error
     const [textContentError, setTextContentError] = useState(null);
+    // useState to set, display and check the post textContent length
     const [charactercount, setCharacterCount] = useState(0);
+
 
     function handleFile(e) {
         const fileName = e.target.files[0].name;
@@ -27,6 +36,7 @@ function PostModal(props) {
         }
     };
 
+    // Function to delete the choosen file
     function handleReset() {
         fileRef.current.value = null;
         setShowImage(false);
@@ -35,6 +45,7 @@ function PostModal(props) {
         console.log("toto");
     }
 
+    // Function to check the post text content length (min 2, max 500)
     function handleCharacter(e) {
         setTextContent(e.target.value);
         setCharacterCount(e.target.value.length);
@@ -109,11 +120,10 @@ function PostModal(props) {
                                     } 
                                     props.setShowModal(false);  
                                 }   
-                            // }
                         }
                         variant="tertiary"
                         className="publish-btn rounded-pill m-2"
-                        disabled={textContent.length < 2 || textContent.length > 500 || props.textContent < 2 || props.textContent > 500}
+                        disabled={textContent.length < 2 && image === null}
                         >
                             {props.buttonText}
                         </Button>

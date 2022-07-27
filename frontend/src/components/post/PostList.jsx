@@ -4,17 +4,16 @@ import AuthContext from "../../context/AuthContext";
 import {createDate, sortByDate} from "../../services/dateTools";
 import CreatePost from "./CreatePost";
 import {checkErrorsAndGetData} from "../../services/errorTools";
-import { hasAuthenticated } from "../../services/authTools";
 
 function PostList(props) {
+    // UseState to set first posts list via UseEffect
     const [postList, setPostList] = useState([]);
+    // useState use as a dependency in useEffect to update the posts list
     const [newPostList, setNewPostList] = useState([]);
+    // useContext user to access the connected user data
     const {user} = useContext(AuthContext);
 
-    // Use effect joué une seule fois au chargement de la page pour récupérer la data
     useEffect(() => {
-        console.log("re-render useEffect");
-        // Récupérer les posts de la base de donnée avec un s merci
         fetch("http://localhost:3000/api/posts", {
             method: "GET",
             headers: {
@@ -23,13 +22,15 @@ function PostList(props) {
         })
         .then(res => checkErrorsAndGetData(res))
         .then((data) => {
-            // Set postlist en local après avoir trié par date
+            // Sort post by date
             sortByDate(data);
+            // Set posts List to display it via .map method
             setPostList(data);
         })
         .catch(error => alert(error.message));
     }, [newPostList]);
 
+    // Function to create a new post
     function handlePost(e, fileRef, textContent) {
         e.preventDefault();
         let formData = new FormData();
@@ -44,14 +45,14 @@ function PostList(props) {
             body: formData
         })
         .then(res => checkErrorsAndGetData(res))
-        .then((newPost) => {
-            newPost = {...newPost, pseudo: user.pseudo};
-            setNewPostList([newPost, ...postList]);
+        .then(() => {
+            setNewPostList([...postList]);
         })
         .catch(error => alert(error.message));
         
     }
 
+    // Function to delete a post
     function handleDelete(postId) {
         fetch(`http://localhost:3000/api/posts/${postId}`, {
             method: "DELETE",
@@ -67,13 +68,12 @@ function PostList(props) {
         })
         .then(res => checkErrorsAndGetData(res))
         .then(() => {
-            // const index = postList.findIndex((element) => element._id === data.id);
-            // postList.splice(index, 1);
             setNewPostList([...postList]);
         })
         .catch(error => alert(error.message));
     }
 
+    // Function to update a post
     function handleUpdate(e, postId, fileRef, textContent, deleteImage, creatorId) {
         e.preventDefault();
         let formData = new FormData();
@@ -93,9 +93,6 @@ function PostList(props) {
         })
         .then((res) => checkErrorsAndGetData(res))
         .then(() => {
-            // const index = postList.findIndex((element) => element._id === updatedPost._id);
-            // postList[index].textContent = updatedPost.textContent;
-            // postList[index].imageUrl = updatedPost.imageUrl;
             setNewPostList([...postList]);
         })
         .catch(error => alert(error.message));
