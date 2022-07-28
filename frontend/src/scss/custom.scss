@@ -25,15 +25,8 @@ $theme-colors: (
     font-family: 'Lato', sans-serif;
 }
 
-html, body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
 main {
-    min-height: 75vh;
-    position: relative;
+    min-height: 80vh;
 }
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
