@@ -127,7 +127,7 @@ exports.deletePost = async (req, res, next) => {
         }
         // Delete post
         Post.deleteOne({ _id: req.body.id })
-        .then(() => res.status(204).json({ id: post._id}))
+        .then(() => res.status(200).json({ id: post._id}))
         .catch(error => res.status(500).json({ error: error })); 
     })
     .catch(error => res.status(500).json({error: error}));
