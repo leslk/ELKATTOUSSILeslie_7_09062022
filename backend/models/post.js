@@ -1,5 +1,7 @@
+// Requires
 const mongoose = require("mongoose");
 
+// Create post schema
 const postSchema = mongoose.Schema({
     userId: {type: String, required: true},
     textContent : {type: String, required: false},

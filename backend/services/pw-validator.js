@@ -1,7 +1,10 @@
+// Requires
 const passwordValidator = require("password-validator");
 
+// set const for new passwordValidator
 const passwordSchema = new passwordValidator();
 
+// password schema
 passwordSchema
 .is().min(8)
 .is().max(36)

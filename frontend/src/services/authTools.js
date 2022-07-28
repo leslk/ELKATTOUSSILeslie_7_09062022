@@ -1,5 +1,6 @@
 import { getItem, removeItem } from "./localStorageTools";
 
+
 export function hasAuthenticated() {
     const user = getItem("user");
     if (user && user.token) {
@@ -18,6 +19,17 @@ export function tokenIsValid(token) {
 
 export function logout() {
     removeItem("user");
+}
+
+export function checkToken(token) {
+    const user = getItem("user");
+    if (user && user.token) {
+        if(user.token !== token) {
+            return false
+        }
+        return true;
+    }
+    return false
 }
 
 
