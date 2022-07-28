@@ -23,7 +23,8 @@ function PostModal(props) {
 
     function handleFile(e) {
         const fileName = e.target.files[0].name;
-        const extension = fileName.split(".")[1];
+        const splittedName = fileName.split('.');
+        const extension = splittedName[splittedName.length - 1];
         if (['gif', 'png', 'jpeg', 'jpg'].includes(extension)) {
             fileRef.current.files = e.target.files;
             setImage(URL.createObjectURL(e.target.files[0]));
