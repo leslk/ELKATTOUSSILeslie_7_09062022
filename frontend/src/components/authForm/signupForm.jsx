@@ -137,6 +137,14 @@ function Signup() {
         });  
     }
 
+    function passwordIsValid() {
+        return passwordValidity.uppercase &&
+            passwordValidity.lowercase &&
+            passwordValidity.numbers &&
+            passwordValidity.symbol &&
+            passwordValidity.passwordLength
+    }
+
     return (
         <main className="container py-5">
             <LogMode mode="signup"/>
@@ -182,12 +190,13 @@ function Signup() {
                 {passwordOnFocus ? <PasswordValidator {...passwordValidity}/> : null}
             </Form>
             <div className="text-center">
+                {console.log(passwordIsValid())}
                 <Button 
                 type="button"
                 variant="tertiary"
                 className="auth-form__btn text-white rounded-pill"
-                onClick={handleForm}  
-                disabled={!emailRegex.test(credentials.email) || !passwordValidity.passwordLength || credentials.pseudo.length < 3}>Inscription</Button>
+                onClick={handleForm}
+                disabled={!emailRegex.test(credentials.email) || !passwordIsValid() || credentials.pseudo.length < 3}>Inscription</Button>
             </div>   
         </main>
     )
