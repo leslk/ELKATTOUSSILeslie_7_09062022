@@ -185,7 +185,7 @@ function Signup() {
                 <Button 
                 type="button"
                 variant="tertiary"
-                className="text-white rounded-pill"
+                className="auth-form__btn text-white rounded-pill"
                 onClick={handleForm}  
                 disabled={!emailRegex.test(credentials.email) || !passwordValidity.passwordLength || credentials.pseudo.length < 3}>Inscription</Button>
             </div>   

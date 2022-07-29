@@ -4,6 +4,7 @@
 @mixin primary-btn {
     transition: 0.3s ease-in-out;
     font-weight: bolder;
+    font-size: 19px;
     &:hover {
         color: white;
         box-shadow: none;
@@ -16,6 +17,7 @@
 @mixin secondary-btn {
     transition: 0.3s ease-in-out;
     font-weight: bolder;
+    font-size: 19px;
     &:hover {
         background-color: $secondary-color;
         color: black;

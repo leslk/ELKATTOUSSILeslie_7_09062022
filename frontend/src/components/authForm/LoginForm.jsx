@@ -107,7 +107,7 @@ function LoginForm() {
                     <Button
                     type="button"
                     variant="tertiary"
-                    className="text-white rounded-pill"
+                    className="auth-form__btn text-white rounded-pill"
                     onClick={handleForm} 
                     disabled={!emailRegex.test(credentials.email) || credentials.password.length < 8}
                     >Connexion</Button>

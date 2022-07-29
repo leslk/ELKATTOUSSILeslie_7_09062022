@@ -5,8 +5,8 @@ import AuthContext from "./context/AuthContext";
 // Components
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
-import LoginForm from "./components/loginForm/LoginForm";
-import SignupForm from "./components/loginForm/signupForm";
+import LoginForm from "./components/authForm/LoginForm";
+import SignupForm from "./components/authForm/signupForm";
 import AuthenticatedRoute from "./components/AutenticatedRoute";
 import PostList from "./components/post/PostList";
 // React
