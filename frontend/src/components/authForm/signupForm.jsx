@@ -190,7 +190,6 @@ function Signup() {
                 {passwordOnFocus ? <PasswordValidator {...passwordValidity}/> : null}
             </Form>
             <div className="text-center">
-                {console.log(passwordIsValid())}
                 <Button 
                 type="button"
                 variant="tertiary"
