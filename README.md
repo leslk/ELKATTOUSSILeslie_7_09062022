@@ -3,7 +3,7 @@
 Une fois le projet installé, rendez-vous sur http://localhost:4200/
 
 ## Technologies utilisées :
-Node.js , MongoBD , Mongoose, React.js, bootstrap
+Node.js , MongoBD , Mongoose, React.js, bootstrap, SCSS
 
 Pour installer le projet :
 
