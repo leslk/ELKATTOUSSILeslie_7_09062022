@@ -53,7 +53,6 @@ function LoginForm() {
         .then(async function(res) {
             const data = await res.json();
             if (res.status === 200) {
-                //delete data.isAdmin;
                 addItem("user", JSON.stringify(data));
                 setUser(hasAuthenticated());
                 removeItem('user');

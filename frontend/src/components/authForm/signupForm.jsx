@@ -105,7 +105,6 @@ function Signup() {
                     })
                     .then(res => res.json())
                     .then((data) => {
-                        //delete data.isAdmin;
                         addItem("user", JSON.stringify(data));
                         setUser(hasAuthenticated());
                         removeItem('user');
