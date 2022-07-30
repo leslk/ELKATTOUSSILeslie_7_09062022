@@ -57,15 +57,12 @@ exports.updatePost = async (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
     const userId = decodedToken.userId;
+    console.log(req.body, req.file);
 
     // get user and post to check the id
     const user = await User.findOne({_id: userId});
     const post = await Post.findOne({_id : req.body.id});
 
-    // Check if there is no file and request text content doesn't respect the requirementsi in client side
-    if (req.body.textContent.length < 2 && !req.file || req.body.textContent.length > 500 && !req.file) {
-        return res.status(400).json("Vous devez renseigner au moins un message de deux caractères minimum pour pouvoir publier")
-    }
     // check if decoded token doesn't match the targeted post user id or if the user isn't admin
     if (post.userId != userId && !user.isAdmin) {
         return res.status(403).json("requête non autorisée !");
