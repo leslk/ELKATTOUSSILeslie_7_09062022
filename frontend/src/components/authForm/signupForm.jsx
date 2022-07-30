@@ -6,7 +6,7 @@ import {AiOutlineEyeInvisible} from "react-icons/ai";
 import {AiOutlineEye} from "react-icons/ai";
 import LogMode from "../logMode/LogMode";
 import { useNavigate} from "react-router-dom";
-import { addItem } from "../../services/localStorageTools";
+import { addItem, removeItem } from "../../services/localStorageTools";
 import { hasAuthenticated } from "../../services/authTools";
 import AuthContext from "../../context/AuthContext";
 
@@ -105,9 +105,12 @@ function Signup() {
                     })
                     .then(res => res.json())
                     .then((data) => {
-                        delete data.isAdmin;
+                        //delete data.isAdmin;
                         addItem("user", JSON.stringify(data));
                         setUser(hasAuthenticated());
+                        removeItem('user');
+                        delete data.isAdmin;
+                        addItem("user", JSON.stringify(data));
                         navigate("/posts", {replace: true});
                     })
                     .catch(err => console.log(err));
